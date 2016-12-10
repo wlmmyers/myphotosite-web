@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns = "http://www.w3.org/1999/xhtml">
+<head>
+		<title>Your Awesome Photosite</title>
+ 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+		<meta name="description" content="Showcasing the various photography exploits of You!"/>
+		<meta name="keywords" content="photography, photosite, photo sharing"/>
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+		<!-- <meta property="og:image" content="http://www.willsphotosite.com/images/IMG_6106.jpg"/> -->
+
+		<link type="text/css" href="css/jquery-ui.css" rel="stylesheet" />
+		<link rel="icon" type="image/png" href="images/favicon.png">
+		<script src="js/jquery-1.11.js" type="text/javascript"></script>
+        
+        <script src="extend.js" type="text/javascript"></script>
+        <script src="responsive.js" type="text/javascript"></script>
+
+		<!--[if lte IE 8]>
+			<link type="text/css" href="css/styleie.css" rel="stylesheet" />
+		<![endif]-->
+		<!--[if gt IE 8]>
+		<link type="text/css" href="responsive.css" rel="stylesheet" />
+		<![endif]-->
+		<!--[if !IE]> -->
+			<link type="text/css" href="responsive.css" rel="stylesheet" />
+		<!-- <![endif]-->
+			<script type="text/javascript">
+
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-35596245-1']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+
+			</script>
+</head>
+	
+<body>
+    <div id = "globalNotification"></div>
+    <div id = 'bodyScreen'></div>    
+
+    <div id = "maincontainer">
+        <header>
+            <div class="titleWrapper">
+	            <h1 id = "titleText">Your Photosite</h1>
+                <aside id = "status">Demo</aside>
+            </div>
+        </header>
+
+        <div class = "panecontainer">
+	        <div class = "infopane">
+                <h3>About</h3>
+	        </div>
+	        <div class = "bigpane" id = "aboutpane">   
+		            <p>Perhaps you are a promising photographer who seeks to gain attention from prospective clients.  Or maybe you're just seeking a unique platform on which to showcase your work to you to your dearest relatives.  Either way, <i>MyPhotosite</i> has you covered!  You can place some info about yourself and your work on this page.
+		            </p>
+             
+		            <div class = "selfimage"><img src = 'images/IMG_6106.jpg' alt='me'/></div>
+                    <div class ="selfpromote">
+                         <a href= "https://www.facebook.com" target = "_blank"><img class ="icon" src ="images/icons/facebook_256.png" alt="fb"/></a>  
+                         <a href= "http://twitter.com" target = "_blank"><img class ="icon" src ="images/icons/twitter_256.png" alt="twitter"/></a> 
+                         <a href= "http://www.linkedin.com" target = "_blank"><img class ="icon" src ="images/icons/linkedin_256.png" alt="linkedin"/></a> 
+                         <a href= "https://plus.google.com" target = "_blank"><img class ="icon" src ="images/icons/google-plus_256.png" alt="google plus"/></a> 
+                    </div>   
+	        </div>
+
+	        <div class = "bigpane" id = "creationspane">
+	        	<p>Creations are coming!</p>
+	        </div>
+		
+	        <div class = "bigpane" id = "contactpane">
+			        <p>This page provides your visitors with a quick way to comment on your work or reach you discretely. </p>
+			        <form class = "feedbackform">
+			        		<div class = "formrow">
+				        		<label for = "feedback_name">Your name (optional)</label><textarea id = "feedback_name"></textarea>
+				        	</div>
+				        	<div class = "formrow">
+				        		<label for = "feedback_comment">Comment</label><textarea id = "feedback_comment"></textarea>
+				        	</div>
+				        	<div class = "buttonrow">
+				        		<input type = "button" class = "greenbutton" id = "submitfeedback" value = "Submit"/>
+				        		<input type = "button" class = "greenbutton" id = "clearfeedback" value = "Clear"/>
+				        	</div>
+			        </form>
+	        </div>
+
+	        <div class = "bigpane" id = "requestpane">
+			        <p>If your visitors would like a high-res copy of a photo, they can request one here, by either entering the photo's category and number in the box below or just clicking the <strong>R</strong> button at the top right while viewing the photo (if present).</p>
+			        <form class = "requestform">
+			        		<div class = "formrow">
+				        		<label for = "request_requestedphoto">Photo Description</label><textarea id="request_requestedphoto"></textarea>
+				        	</div>
+				        	<div class = "formrow">
+				        		<label for = "request_email">Your email</label><textarea id="request_email"></textarea>
+				        	</div>
+				        	<div class = "formrow">
+				        		<label for = "request_comments">Additional Comments</label><textarea id="request_comments"></textarea>
+				        	</div>
+				        	<div class = "buttonrow">
+				        		<input type = "button" class = "orangebutton" id = "submitrequest" value = "Submit"/>
+				        		<input type = "button" class = "orangebutton" id = "clearrequest" value = "Clear"/>
+				        	</div>
+			        </form>		        
+	        </div>
+	    </div>
+
+        <footer>
+            <div class = "menubar" id = "mainmenu">
+		        <a href = "#photos" class = "menubaritem" id = "photos" >Photos</a>
+		        <a href = "#about" class = "menubaritem" id = "about">About</a>
+		        <a href = "#contact" class = "menubaritem" id = "contact">Contact</a>
+		        <a href = "#request" class = "menubaritem" id = "request">Request</a>
+		        <a href = "#creations" class = "menubaritem" id = "creations" >Creations</a>
+		        <a href = "#" class = "menubaritem" id = "codeitem">Code</a>
+	        </div>	
+	
+	        <div id= "ietagline"><aside>Designed and Maintained by You</aside></div>
+	    </footer>
+	    <img id="thumbImgHidden" src="" alt="hiddenImage"/>
+
+    </div>
+
+    <div id = 'slidercontainer'>
+    	<div id = 'sliderdiv'></div>
+    	<div id = 'slidertext'></div>
+        <div class= "buttons">
+            <div class = "bigarrowright"></div>
+	        <div class = "bigarrowleft"></div>
+	        <img class="closebutton closeslider variable" src="images/close.jpg" alt="close" title="Close Slider">
+	        <img class="switchphotodisplay variable" src="images/slideshowview.jpg" alt="close" title="Switch to Full Screen">
+	        <img class="skiptofront variable" src="images/sliderskip.jpg" alt="close" title="Skip to Beginning">
+	        <img class="skiptoback variable" src="images/sliderskip.jpg" alt="close" title="Skip to End">
+        </div>
+        <div class = "largepagenum"></div>
+    </div>
+
+    <div id = "slideshowcontainer">
+    	<div class = "interior">
+		    <img id = 'largesingleimage' src = 'images/blank.png' alt = 'largeimg'/>	
+		    <div class = "imagescreen" id = "imgscreen"> </div>
+		    <div class = "imagetext">
+                <p class="imagecaption"></p>
+                <p><a href="#" id="addcomment">Add a comment</a></p>
+                <section class = "imagecomments"></section>
+          </div>
+	    </div>
+        <div class= "buttons">
+	        <img class = "closebutton variable" src = 'images/close.jpg' alt = 'close' title= "Close View"/>	
+	        <div class = "captionbutton variable"><img class = "captionbuttonimg" src = 'images/caption.jpg' alt = 'show caption' title= "Toggle Caption"/></div>
+	        <div class = "requestbutton variable"><img src = 'images/blank.png' alt = 'request image' title = "Request This Image"/></div>
+	        <div class = "zoombutton variable"><img class = 'zoombuttonimg' src = 'images/zoom.png' alt = 'zoom button' title = 'Zoom In'/></div>
+	        <img class="switchphotodisplay variable" src="images/sliderview.jpg" alt="close" title="Switch to Slider">
+	        <div class = "bigarrowright"></div>
+	        <div class = "bigarrowleft"></div>
+        </div>
+        <div class = "largepagenum"></div>
+	    <img id = 'zoomBack' src = 'images/zoom.png' alt = 'zoom button' title = "Zoom Back"/>
+    	<div id = 'tipBlock'></div>	    
+    </div>
+
+    <!-- Dialogs -->
+    <!--/////////-->
+
+	    <div id = "dialog-submit" title = "Upload Photos" class = "dialog">
+		    <form id = "submitform" action="php/upload_multiple.php" method="post" enctype="multipart/form-data">
+			   <input type="file" id="filename0" name="file[]" multiple="multiple"/>
+			   <select name = "category" autofocus></select> 
+		    </form>
+	    </div>
+
+	    <div id = "dialog-login" title = "Admin Login" class = "dialog" >
+		    <form id = "loginform" action="php/login.php" method="post" enctype="multipart/form-data">
+			    <table style = "text-align: left;">
+			    <tr>
+			    <td>Username</td><td><input type="text" name = "user" id = "username" value="" autofocus/></td>
+			    </tr><tr>
+			    <td>Password</td><td><input type="password" name = "pass" id = "password" value="" /></td>
+			    </tr><tr>
+			    <td colspan = "2"><input type="checkbox" id="rememberMe" value="0"/>&nbsp;Remember these values</td></tr><tr>
+			    <td colspan = "2"><input type="checkbox" class="autologin" value="0"/>&nbsp;Auto login (disable in Logout dialog)</td>
+			    </tr><tr>
+			    <td colspan = "2" id = "loginstatus" style = "color:red;"></td>
+			    </tr></table>
+		    </form>
+	    </div>
+        <div id = "dialog-logout" title = "Admin Logout" class = "dialog" >
+		        Currently Logged In.
+		       <div><input type="checkbox" class="autologin" value="0"/>&nbsp;Auto login</div>
+	    </div>		
+	
+	    <div id = "dialog-code" title = "Private Access" class = "dialog" >
+			    <table id = "codetable" style = "text-align: left;"><tr>
+			    <td>Enter your code: </td><td><input type="text" name = "code" id = "thecode" value="" autofocus/></td>
+			    </tr><tr><td colspan = "2" id = "codestatus" style = "color:red;"></tr></table>
+	    </div>	
+	
+	    <div id = "dialog-panetitle" title = "Add Pane" class = "dialog" >
+			    <table style = "text-align: left;"><tr>
+			    <td>Enter a pane title: </td><td><input type="text" id = "newpanetitle" value="" autofocus /></td></tr><tr>
+                <td><input type="checkbox" id="isHidden" value="0"/>&nbsp;Hidden</td>
+                <td><input type="checkbox" id="isSaveable" value="0"/>&nbsp;Saveable</td>
+                </tr></table>
+	    </div>
+
+	    <div id = "edit-caption-dialog" title = "Edit Caption" class = "dialog" >
+			    <textarea id = "captionTextarea" autofocus></textarea>
+	    </div>
+
+        <div id = "note-dialog" title = "Notes" class = "dialog" >
+			    <textarea id = "noteTextarea" autofocus></textarea>
+	    </div>
+
+	    <div id = "tags-dialog" title = "Tags" class = "dialog" >
+			    <textarea id = "tagsTextarea" autofocus></textarea>
+	    </div>
+
+        <div id = "comment-dialog" title = "Comment" class = "dialog" >
+        			<div class = "formrow">
+                	<label for = "comment_text">Care to express yourself?</label>
+			    		<textarea id = "comment_text" class = "comment" autofocus></textarea>
+			    	</div>
+			    	<div class = "formrow">
+                	<label for = "comment_name">Your name</label>
+                	<textarea id = "comment_name" class="name"></textarea>
+               </div>
+	    </div>
+
+        <div id = "dialog-settings" title = "General Settings" class = "dialog" >
+            
+                <!-- Color Picker Settings-->
+                <section class= "colorSettingsSelect">
+                <h3>Color</h3><a href="#" class="normalizeColors sliderSpecific slideshowSpecific notifyTitle" title="Set this category's Slider and Slideshow views to the same color settings">Normalize</a>
+                    <div class= "colorSettingsWrapper">
+                        <select class= "colorSelector">
+                        </select>
+                        <select class= "colorSelectorInactive" autofocus>
+                            <option data-default = "default" value = "paneaccent" class = "sectionSpecific" data-type = "Accent" selected>Pane Accent</option>
+                            <option value = "paneback" class = "sectionSpecific" data-type = "Back">Pane Background</option>
+                            <option data-default = "default" value = "backgroundfilter" class = "sectionSpecific photoSpecific" data-type = "backFilter">Background Filter</option>
+                            <option value = "titlecolor" class = "sectionSpecific photoSpecific" data-type = "title">Site Title</option>
+                            <option value = "textcolor" class = "sectionSpecific photoSpecific" data-type = "text">Site Text</option>
+                            <option value = "statuscolor" class = "photoSpecific" data-type = "status">Pane Status</option>
+                            <option value = "paneexpandedcolor" class = "photoSpecific" data-type = "paneExpanded">Expanded Pane</option>
+                            <option value = "notificationcolor" class = "generalSettings" data-type = "notification">Notification Back</option>
+                            <option value = "notificationaccent" class = "generalSettings" data-type = "notificationAccent">Notification Link</option>
+                            <option data-default = "default" value = "sliderback" class = "sliderSpecific" data-type = "sliderBack">Background</option>
+                            <option value = "slideraccent" class = "sliderSpecific" data-type = "sliderAccent">Accent</option>
+                            <option value = "slidertextback" class = "sliderSpecific" data-type = "sliderCaption">Caption Back</option>
+                            <option value = "slidertext" class = "sliderSpecific" data-type = "sliderText">Caption Text</option>
+                            <option data-default = "default" value = "slideshowback" class = "slideshowSpecific" data-type = "slideshowBack">Background</option>
+                            <option value = "slideshowaccent" class = "slideshowSpecific" data-type = "slideshowAccent">Accent</option>
+                            <option value = "slideshowplaceholder" class = "slideshowSpecific" data-type = "slideshowPlaceholder">Image Placeholder</option>
+                           
+
+                        </select>
+                    </div>
+                </section>
+                <section class = "colorSettingsSection">
+                
+                    <section data-label = "H" class= "onerow generalSettings colorSettings" id= "colorHue">
+                        <label>H</label>
+                       <div id="setHue" class= "controller optionsSlider"></div>
+                    </section>
+
+                     <section data-label = "S" class= "onerow generalSettings colorSettings" id= "colorSaturation">
+                        <label>S</label>
+                       <div id="setSaturation" class= "controller optionsSlider"></div>
+                    </section>
+
+                     <section data-label = "L" class= "onerow generalSettings colorSettings" id= "colorLightness">
+                        <label>L</label>
+                       <div id="setLightness" class= "controller optionsSlider"></div>
+                    </section>
+
+                    <section data-label = "A" class= "onerow generalSettings colorSettings" id= "colorOpacity">
+                        <label>A</label>
+                       <div id="setOpacity" class= "controller optionsSlider"></div>
+                    </section>
+                </section>
+               <section class= "onerow photoSpecific" id= "paneExpandedWidth">
+                    <label>Pane Expanded Width</label>
+                    <div id="paneExpandedSizeSlider" class= "controller optionsSlider"></div>
+                </section>
+                 <section class= "onerow sectionSpecific photoSpecific" id= "paneWidth">
+                    <label>Pane Width</label><a href="#" class="normalize notifyTitle" title="Set all panes to this width">Normalize</a>
+			        <div id="paneSizeSlider" class= "controller optionsSlider"></div>
+                </section>
+                <section class= "onerow photoSpecific sectionSpecific" id= "openPhotoConfig">
+                    <label>Photo Config</label>
+                    <button class  = 'controller standardButton'>Open It</button>
+                </section>
+                <section class= "onerow sliderSpecific slideshowSpecific" id= "toggleCaptions">
+                    <label>Captions</label>
+                    <button class  = 'controller standardButton'>On by default</button>
+                </section>
+                
+	    </div>
+
+	    <div id="dialog-config" title="Photo Configuration" class = "dialog">
+ 			<div class = "searchContainer tofade">
+    			<label for = "configSearch-searchText">Filter:</label>
+    			<select class = "standardSelect" id = "configSearch-type">
+    				<option data-type = "category" data-options-available ="contains,is exactly">category</option>
+    				<option data-type = "filename" data-options-available ="contains,is exactly,has,missing">filename</option>
+                    <option data-type = "tags" data-options-available ="contains,is exactly,has,missing">tag</option>
+    				<option data-type = "added" data-options-available ="contains,is exactly,has,missing,less than,greater than">date added</option>
+    				<option data-type = "taken" data-options-available ="contains,is exactly,has,missing,less than,greater than">date taken</option>
+    				<option data-type = "aperature" data-options-available ="contains,is exactly,has,missing,less than,greater than">aperature</option>
+    				<option data-type = "exposuretime" data-options-available ="contains,is exactly,has,missing,less than,greater than">shutter speed</option>
+    				<option data-type = "focallength" data-options-available ="contains,is exactly,has,missing,less than,greater than">focal length</option>
+    				<option data-type = "iso" data-options-available ="contains,is exactly,has,missing,less than,greater than">ISO</option>
+    			</select>
+
+    			<select class = "standardSelect" id = "configSearch-operator"></select>
+
+                <select class = "none" id = "configSearch-operator-hidden">
+    				<option data-operator = "*=">contains</option>
+    				<option data-operator = "<">less than</option>
+                    <option data-operator = ">">greater than</option>
+                    <option data-operator = "=">is exactly</option>
+                    <option data-operator = "">has</option>
+                    <option data-operator = "">is missing</option>
+    			</select>
+
+    			<input class = "standardInput" id = "configSearch-searchText" type = "text" autofocus/>
+    			<button class = "standardButton clear">x</button>
+    		</div>
+		   <div class = "configcontent"></div>
+	    </div>
+        
+	    <div class = "sortbox"></div>
+
+    <script src="js/jquery-ui.js" type="text/javascript"></script>
+	<script src="js/jquery.mousewheel.min.js" type="text/javascript"></script>
+    
+    <script src="events.js" type="text/javascript"></script>
+    <script src="dialogs.js" type="text/javascript"></script>
+
+	
+</body>
+	
+</html>
+	
