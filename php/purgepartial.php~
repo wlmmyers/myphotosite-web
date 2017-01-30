@@ -3,5 +3,5 @@
 extract( $_GET );
 
 echo $_GET['file'];
-		
+
 ?>

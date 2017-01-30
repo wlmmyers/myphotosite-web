@@ -1,21 +1,21 @@
 ﻿<?php
 
-	require_once 'dbConnection.php';
+  require_once 'dbConnection.php';
 
-    try {  
-      $connection = new PDO("mysql:host=$host;dbname=$db", $user, $pass);  
-    }  
-    catch(PDOException $e) {  
-        echo $e->getMessage();  
-    }  
+    try {
+      $connection = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+    }
+    catch(PDOException $e) {
+        echo $e->getMessage();
+    }
 
-	$sql = "SELECT phototable.img_id, phototable.filename, phototable.caption, phototable.comments, phototable.tags, phototable.date_added AS 'upload_date', 
+  $sql = "SELECT phototable.img_id, phototable.filename, phototable.caption, phototable.comments, phototable.tags, phototable.date_added AS 'upload_date',
                 categories.name AS 'category', categories.catsort, categories.date_created AS 'date_created', categories.hidden, categories.saveable, categories.thumb,
                 categories.slideshowBackColor, categories.slideshowAccentColor, categories.slideshowPlaceholderColor, categories.sliderBackColor, categories.sliderAccentColor,
                 categories.sliderCaptionColor, categories.sliderTextColor, categories.toggleCaption, categories.defaultView, categories.commentsEnabled
-			FROM phototable  
-			RIGHT OUTER JOIN categories
-			ON phototable.category=categories.name
+      FROM phototable
+      RIGHT OUTER JOIN categories
+      ON phototable.category=categories.name
             ORDER BY categories.catsort,categories.name,phototable.sort_id";
 
     $sql2 = "SELECT * FROM config";
@@ -28,11 +28,11 @@
 
     $therows = $statement->fetchAll();
     $therows2 = $statement2->fetchAll();
- 	$data = array('photodata' => array(), 'configdata' => array() );
+   $data = array('photodata' => array(), 'configdata' => array() );
 
-    foreach($therows as $rows) {  
+    foreach($therows as $rows) {
 
-        $data['photodata'][$rows['category']] = array( 
+        $data['photodata'][$rows['category']] = array(
             'photos' => array(),
             'sort' => $rows['catsort'],
             'date_created' => $rows['date_created'],
@@ -53,10 +53,10 @@
         );
     }
 
-    foreach($therows as $rows) {  
+    foreach($therows as $rows) {
         if (json_decode($rows['comments']) != null) $thecomments =  json_decode($rows['comments']);
         else $thecomments = [];
-        $data['photodata'][$rows['category']]['photos'][] = array( 
+        $data['photodata'][$rows['category']]['photos'][] = array(
             'id' => $rows['img_id'],
             'filename' => $rows['filename'],
             'caption' => $rows['caption'],
@@ -72,6 +72,6 @@
 
     echo json_encode($data);
 
-	$connection = NULL;
-		
+  $connection = NULL;
+
 ?>

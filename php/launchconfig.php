@@ -5,40 +5,40 @@
 //////////////////////////////////////////////////////////////
 
 
-	require_once 'dbConnection.php';
+  require_once 'dbConnection.php';
 
-    try {  
-      $connection = new PDO("mysql:host=$host;dbname=$db", $user, $pass);  
-    }  
-    catch(PDOException $e) {  
-        echo $e->getMessage();  
-    } 
-	 
-	$sql = "SELECT *
-			FROM phototable  
-			RIGHT OUTER JOIN categories
-			ON phototable.category=categories.name
-			ORDER BY categories.catsort,categories.name,phototable.sort_id";
-			
-	$statement = $connection->prepare($sql);
+    try {
+      $connection = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+    }
+    catch(PDOException $e) {
+        echo $e->getMessage();
+    }
+
+  $sql = "SELECT *
+      FROM phototable
+      RIGHT OUTER JOIN categories
+      ON phototable.category=categories.name
+      ORDER BY categories.catsort,categories.name,phototable.sort_id";
+
+  $statement = $connection->prepare($sql);
 
    $statement->execute();
-		
-	$statement->setFetchMode(PDO::FETCH_ASSOC);  
 
-	$oldcategory = '';
-	$output = "<div class = \"hidden\">";
+  $statement->setFetchMode(PDO::FETCH_ASSOC);
 
-	$hiddenval = '';
-	$saveableval = '';
-	$defaultView = '';
-	$captionval = '';
-	$commentsval = '';
+  $oldcategory = '';
+  $output = "<div class = \"hidden\">";
 
-	$counter = 0;
+  $hiddenval = '';
+  $saveableval = '';
+  $defaultView = '';
+  $captionval = '';
+  $commentsval = '';
 
-	while($rows = $statement->fetch()) {  
-                
+  $counter = 0;
+
+  while($rows = $statement->fetch()) {
+
                 if($rows["hidden"]==0) $hiddenval = 'shown';
                 else $hiddenval = 'hidden';
 
@@ -54,19 +54,19 @@
                 if($rows["toggleCaption"]== 'off') $captionval = 'captions hidden';
                 else $captionval = 'captions shown';
 
-				$newcategory = $rows["name"];
-				
-				//per category
-				if($oldcategory != $newcategory){
-				$output.= "</div></div>
+        $newcategory = $rows["name"];
+
+        //per category
+        if($oldcategory != $newcategory){
+        $output.= "</div></div>
                      <div class = \"categoryContainer\" id = \"".$rows["name"]."_container\">
                          <section class = \"categoryHeader\" data-category = \"".$rows["name"]."\" data-catid = \"".$rows["catid"]."\"><h2>".$rows["name"]."</h2><span class = \"date-created\">".$rows["date_created"]."</span>
-                             <div class = \"arrowUp configarrows\"></div><div class = \"arrowDown configarrows\"></div> 
+                             <div class = \"arrowUp configarrows\"></div><div class = \"arrowDown configarrows\"></div>
                              <div class = \"categoryOptions\">
                                 <button class = \"upload standardButton\" title = \"upload photos to this category\">upload</button>
                                 <button class = \"transfer standardButton\" title = \"transfer photos to this category\">transfer to</button>
                                 <button class = \"copy standardButton\" title = \"copy photos to this category\">copy to</button>
-                                <button class = \"deleteCatButton standardButton\" title = \"delete this category\">delete</button>  
+                                <button class = \"deleteCatButton standardButton\" title = \"delete this category\">delete</button>
                                 <button class = \"toggleview toggle standardButton\" data-variable = \"defaultView\" title = \"change the default view\">".$defaultView."</button>
                                 <button class = \"togglehidden toggle standardButton\" data-variable = \"hidden\" title = \"add or remove from public view\">".$hiddenval."</button>
                                 <button class = \"togglesaveable toggle standardButton\" data-variable = \"saveable\" title = \"allow public to download images\">".$saveableval."</button>
@@ -80,7 +80,7 @@
                          <div class = \"sortableContainerCloned\" id = \"".$rows["name"]."_sortable_container_cloned\"></div>
                          <div class = \"sortableContainer\" id = \"".$rows["name"]."_sortable_container\">";
                 if ($rows['filename']==NULL) continue;
-				}
+        }
 
                 $exif = array();
                 $exif['camera_make'] = $rows['camera_make'] != '' ? $rows['camera_make'] : "<span class=\"not-available\">not available</span>";
@@ -91,18 +91,18 @@
                 $exif['focal_length'] = $rows['focal_length'] != '' ? $rows['focal_length'].'mm' : "<span class=\"not-available\">not available</span>";
                 $exif['date_taken'] = $rows['date_taken'] != '' ? substr(str_replace(':', '-', $rows['date_taken']), 0 , 10) : "<span class=\"not-available\">not available</span>";
 
-				//per image
-				$output.= "<div class = \"onesection left\" 
-									data-category = \"".$rows["name"]."\" 
-									data-caption = \"".$rows["caption"]."\"
-									data-filename = \"".$rows["filename"]."\"
+        //per image
+        $output.= "<div class = \"onesection left\"
+                  data-category = \"".$rows["name"]."\"
+                  data-caption = \"".$rows["caption"]."\"
+                  data-filename = \"".$rows["filename"]."\"
                                     data-tags = \"".$rows["tags"]."\"
-									data-added = \"".$rows["date_added"]."\"
-									data-taken = \"".$rows["date_taken"]."\"
-									data-aperature = \"".$rows["f_number"]."\"
-									data-exposuretime = \"".$rows["exposure_time"]."\"
-									data-focallength = \"".$rows["focal_length"]."\"
-									data-iso = \"".$rows["iso"]."\">
+                  data-added = \"".$rows["date_added"]."\"
+                  data-taken = \"".$rows["date_taken"]."\"
+                  data-aperature = \"".$rows["f_number"]."\"
+                  data-exposuretime = \"".$rows["exposure_time"]."\"
+                  data-focallength = \"".$rows["focal_length"]."\"
+                  data-iso = \"".$rows["iso"]."\">
                         <button class = \"standardButton delete\" title = \"delete this image\">X</button>
                         <ul class = \"photoInfo\">
                             <li>name: ".$rows["filename"]."</li>
@@ -115,23 +115,23 @@
                         </ul>
                         <ul class = \"photoTags\">";
                         if($rows["tags"] != ""){
-	                        foreach(explode(",",$rows["tags"]) as $x){
-										$output.="<li>".$x."</li>";
-									}
-								}
+                          foreach(explode(",",$rows["tags"]) as $x){
+                    $output.="<li>".$x."</li>";
+                  }
+                }
                         $output.="</ul>
-						<img class = \"sortimage\" data-filename = \"".$rows["filename"]."\" data-imgid = \"".$rows["img_id"]."\"src = \"images/blank.png\" style = \"background-image: url(photothumbs/".$rows["filename"].")\" alt = \"\"/><br/>
-					    </div>";
-				
-				$oldcategory = $rows["name"];
-				
-				$counter++;
-			}
+            <img class = \"sortimage\" data-filename = \"".$rows["filename"]."\" data-imgid = \"".$rows["img_id"]."\"src = \"images/blank.png\" style = \"background-image: url(photothumbs/".$rows["filename"].")\" alt = \"\"/><br/>
+              </div>";
 
-	
+        $oldcategory = $rows["name"];
+
+        $counter++;
+      }
+
+
 
 echo json_encode($output);
-		
-	$connection = NULL;
-		
+
+  $connection = NULL;
+
 ?>

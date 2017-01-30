@@ -3,8 +3,8 @@
 //////////////////////////////////////////////////////////////
 ////////////////////// DATABASE STUFF ////////////////////////
 //////////////////////////////////////////////////////////////
-	extract( $_GET );
-	
+  extract( $_GET );
+
     $code = array('isabelle', 'Isabelle');
     $isvalid = FALSE;
     foreach($code as $val){
@@ -16,5 +16,5 @@
     echo json_encode('cleared');
     else
     echo json_encode('notclear');
-		
+
 ?>

@@ -1,23 +1,23 @@
 <?php
 
-	include 'WideImage/WideImage.php';
+  include 'WideImage/WideImage.php';
 
-	$filenamepre = '../../photos/';
+  $filenamepre = '../../photos/';
 
-	$outputfile = 'small.jpg';
+  $outputfile = 'small.jpg';
 
-	$image = $_GET["file"];
+  $image = $_GET["file"];
 
-	$imagewidth = $_GET["width"];
+  $imagewidth = $_GET["width"];
 
-	$imageheight = $_GET["height"];
+  $imageheight = $_GET["height"];
 
-	$spacing = 10;
+  $spacing = 10;
 
-	$resizetype = 'inside';
+  $resizetype = 'inside';
 
-	$outputimage = WideImage::load($filenamepre . $image)-> resize($imagewidth, $imageheight, $resizetype);
+  $outputimage = WideImage::load($filenamepre . $image)-> resize($imagewidth, $imageheight, $resizetype);
 
-	$outputimage->output('jpg', 90);
+  $outputimage->output('jpg', 90);
 
 ?>
