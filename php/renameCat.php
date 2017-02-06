@@ -2,40 +2,28 @@
 
 extract( $_POST );
 
-        require_once 'dbConnection.php';
+require_once 'dbConnection.php';
 
-        try {
-            $connection = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
-        }
-        catch(PDOException $e) {
-            echo $e->getMessage();
-        }
+try {
+    $connection = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+}
+catch(PDOException $e) {
+    echo $e->getMessage();
+}
 
-        $sqltwo = "UPDATE categories SET name = :two WHERE name = :one;";
-        $statementtwo = $connection->prepare($sqltwo);
-        $statementtwo->bindParam(':one', $one, PDO::PARAM_STR);
-        $statementtwo->bindParam(':two', $two, PDO::PARAM_STR);
+// TODO eek, refactor!
+$getid = $connection->prepare("SELECT id FROM categories WHERE title = :title");
+$getid->bindParam(':title', $title, PDO::PARAM_STR);
+$getid->execute();
+$category_id = $getid->fetchColumn();
 
-        if($statementtwo->execute())
-        {
+$sqlone = "UPDATE categories SET title = :newtitle WHERE id = :category_id;";
+$statementone = $connection->prepare($sqlone);
+$statementone->bindParam(':category_id', $category_id, PDO::PARAM_STR);
+$statementone->bindParam(':newtitle', $newtitle, PDO::PARAM_STR);
 
-            $sqlone = "UPDATE phototable SET category = :two WHERE category = :one;";
-            $statementone = $connection->prepare($sqlone);
-            $statementone->bindParam(':one', $one, PDO::PARAM_STR);
-            $statementone->bindParam(':two', $two, PDO::PARAM_STR);
-            $statementone->execute();
-
-            echo true;
-
-        }
-        else echo false;
-
-
-
-
-
-
-
+$statementone->execute();
+echo true;
 
 $connection = NULL;
 ?>

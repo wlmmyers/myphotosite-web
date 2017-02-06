@@ -10,7 +10,7 @@
     catch(PDOException $e) {
         echo $e->getMessage();
     }
-      $sql = "UPDATE phototable SET sort_id = CASE img_id ";
+      $sql = "UPDATE photos SET photos.order = CASE id ";
       foreach ($sort as $id => $ordinal) {
         $sql .= sprintf("WHEN %d THEN %d ", $id, $ordinal);
       }

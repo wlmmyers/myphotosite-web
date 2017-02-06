@@ -1,9 +1,5 @@
 <?php
 
-//////////////////////////////////////////////////////////////
-////////////////////// DATABASE STUFF ////////////////////////
-//////////////////////////////////////////////////////////////
-
   require_once 'dbConnection.php';
 
     try {
@@ -13,7 +9,7 @@
         echo $e->getMessage();
     }
 
-  $sql = "SELECT name,thumb FROM categories";
+  $sql = "SELECT title,thumb FROM categories";
 
   $statement = $connection->prepare($sql);
 
@@ -23,7 +19,7 @@
 
   while($rows = $statement->fetch()) {
 
-        $thumbs[$rows['name']] = json_decode($rows['thumb']);
+        $thumbs[$rows['title']] = json_decode($rows['thumb']);
 
     }
 

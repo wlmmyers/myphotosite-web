@@ -1,9 +1,5 @@
 <?php
 
-//////////////////////////////////////////////////////////////
-////////////////////// DATABASE STUFF ////////////////////////
-//////////////////////////////////////////////////////////////
-
   extract( $_POST );
     require_once 'dbConnection.php';
 
@@ -15,7 +11,7 @@
     }
 
 
-    $sql = "UPDATE categories SET thumb = CASE name ";
+    $sql = "UPDATE categories SET thumb = CASE title ";
       foreach ($thumbs as $ordinal => $src) {
         $sql .= sprintf("WHEN '%s' THEN '%s' ", $ordinal, $src);
       }

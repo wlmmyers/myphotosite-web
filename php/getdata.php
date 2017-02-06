@@ -9,14 +9,15 @@
         echo $e->getMessage();
     }
 
-  $sql = "SELECT phototable.img_id, phototable.filename, phototable.caption, phototable.comments, phototable.tags, phototable.date_added AS 'upload_date',
-                categories.name AS 'category', categories.catsort, categories.date_created AS 'date_created', categories.hidden, categories.saveable, categories.thumb,
-                categories.slideshowBackColor, categories.slideshowAccentColor, categories.slideshowPlaceholderColor, categories.sliderBackColor, categories.sliderAccentColor,
-                categories.sliderCaptionColor, categories.sliderTextColor, categories.toggleCaption, categories.defaultView, categories.commentsEnabled
-      FROM phototable
-      RIGHT OUTER JOIN categories
-      ON phototable.category=categories.name
-            ORDER BY categories.catsort,categories.name,phototable.sort_id";
+  $sql = "SELECT photos.id, photos.filename, photos.caption, photos.comments, photos.tags,
+    photos.created_at AS 'upload_date',
+    categories.title AS 'category', categories.order AS category_order, categories.created_at AS 'date_created', categories.hidden, categories.saveable, categories.thumb,
+    categories.slideshowBackColor, categories.slideshowAccentColor, categories.slideshowPlaceholderColor, categories.sliderBackColor, categories.sliderAccentColor,
+    categories.sliderCaptionColor, categories.sliderTextColor, categories.toggleCaption, categories.defaultView, categories.commentsEnabled
+    FROM photos
+    RIGHT OUTER JOIN categories
+    ON photos.category_id=categories.id
+          ORDER BY categories.order,categories.title,photos.order";
 
     $sql2 = "SELECT * FROM config";
 
@@ -34,7 +35,7 @@
 
         $data['photodata'][$rows['category']] = array(
             'photos' => array(),
-            'sort' => $rows['catsort'],
+            'sort' => $rows['category_order'],
             'date_created' => $rows['date_created'],
             'hidden' => $rows['hidden'],
             'saveable' => $rows['saveable'],
@@ -57,7 +58,7 @@
         if (json_decode($rows['comments']) != null) $thecomments =  json_decode($rows['comments']);
         else $thecomments = [];
         $data['photodata'][$rows['category']]['photos'][] = array(
-            'id' => $rows['img_id'],
+            'id' => $rows['id'],
             'filename' => $rows['filename'],
             'caption' => $rows['caption'],
             'comments' => $thecomments,

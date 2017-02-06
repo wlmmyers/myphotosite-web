@@ -1,9 +1,5 @@
 <?php
 
-//////////////////////////////////////////////////////////////
-////////////////////// DATABASE STUFF ////////////////////////
-//////////////////////////////////////////////////////////////
-
   extract( $_POST );
     require_once 'dbConnection.php';
 
@@ -14,11 +10,11 @@
         echo $e->getMessage();
     }
 
-    $sql = "UPDATE phototable SET ".$toset." = CASE img_id ";
+    $sql = "UPDATE photos SET ".$toset." = CASE id ";
   foreach ($images as $ordinal => $imgid) {
     $sql .= sprintf("WHEN '%s' THEN '%s' ", $imgid, str_replace("'", "\'",$data[$ordinal]));
   }
-  $sql .= "END WHERE img_id IN (";
+  $sql .= "END WHERE id IN (";
   foreach ($images as $ordinal => $imgid) {
     $sql .= "'".$imgid."',";
   }

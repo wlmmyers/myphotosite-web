@@ -11,7 +11,7 @@
         echo $e->getMessage();
     }
 
-    $sql = "UPDATE categories SET catsort = CASE catid ";
+    $sql = "UPDATE categories SET categories.order = CASE id ";
       foreach ($sort as $id => $ordinal) {
         $sql .= sprintf("WHEN %d THEN '%s' ", $id, $ordinal);
       }

@@ -10,7 +10,7 @@
         echo $e->getMessage();
     }
 
-  $sql = "UPDATE phototable SET caption = :caption WHERE filename = :filename;";
+  $sql = "UPDATE photos SET caption = :caption WHERE filename = :filename;";
     $statement = $connection->prepare($sql);
     $statement->bindParam(':caption', $caption, PDO::PARAM_STR);
     $statement->bindParam(':filename', $imagefor, PDO::PARAM_STR);

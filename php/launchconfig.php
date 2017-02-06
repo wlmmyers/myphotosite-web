@@ -1,9 +1,5 @@
 <?php
 
-//////////////////////////////////////////////////////////////
-////////////////////// DATABASE STUFF ////////////////////////
-//////////////////////////////////////////////////////////////
-
 
   require_once 'dbConnection.php';
 
@@ -14,15 +10,20 @@
         echo $e->getMessage();
     }
 
-  $sql = "SELECT *
-      FROM phototable
-      RIGHT OUTER JOIN categories
-      ON phototable.category=categories.name
-      ORDER BY categories.catsort,categories.name,phototable.sort_id";
+  $sql = "SELECT categories.hidden, categories.saveable, categories.defaultView,
+    categories.commentsEnabled, categories.toggleCaption, categories.title AS category_title,
+    categories.id, categories.created_at AS category_created_at,
+    photos.filename, photos.camera_make, photos.camera_model, photos.exposure_time,
+    photos.f_number, photos.date_taken, photos.iso, photos.focal_length, photos.caption,
+    photos.created_at AS photo_created_at, photos.tags, photos.id AS photo_id
+    FROM photos
+    RIGHT OUTER JOIN categories
+    ON photos.category_id=categories.id
+    ORDER BY categories.order,categories.title,photos.order";
 
   $statement = $connection->prepare($sql);
 
-   $statement->execute();
+  $statement->execute();
 
   $statement->setFetchMode(PDO::FETCH_ASSOC);
 
@@ -54,13 +55,13 @@
                 if($rows["toggleCaption"]== 'off') $captionval = 'captions hidden';
                 else $captionval = 'captions shown';
 
-        $newcategory = $rows["name"];
+        $newcategory = $rows["category_title"];
 
         //per category
         if($oldcategory != $newcategory){
         $output.= "</div></div>
-                     <div class = \"categoryContainer\" id = \"".$rows["name"]."_container\">
-                         <section class = \"categoryHeader\" data-category = \"".$rows["name"]."\" data-catid = \"".$rows["catid"]."\"><h2>".$rows["name"]."</h2><span class = \"date-created\">".$rows["date_created"]."</span>
+                     <div class = \"categoryContainer\" id = \"".$rows["category_title"]."_container\">
+                         <section class = \"categoryHeader\" data-category = \"".$rows["category_title"]."\" data-catid = \"".$rows["category_id"]."\"><h2>".$rows["category_title"]."</h2><span class = \"date-created\">".$rows["category_created_at"]."</span>
                              <div class = \"arrowUp configarrows\"></div><div class = \"arrowDown configarrows\"></div>
                              <div class = \"categoryOptions\">
                                 <button class = \"upload standardButton\" title = \"upload photos to this category\">upload</button>
@@ -75,10 +76,10 @@
                                 <button class = \"thumbnaillarger standardButton\" title = \"make thumbnails larger\">+</button>
                                 <button class = \"thumbnailsmaller standardButton\" title = \"make thumbnails smaller\">-</button>
                              </div>
-                             <input class = \"cat_id_field\" name = \"catid[]\" type = \"hidden\" value=\"".$rows["catid"]."\"/>
+                             <input class = \"cat_id_field\" name = \"catid[]\" type = \"hidden\" value=\"".$rows["category_id"]."\"/>
                          </section>
-                         <div class = \"sortableContainerCloned\" id = \"".$rows["name"]."_sortable_container_cloned\"></div>
-                         <div class = \"sortableContainer\" id = \"".$rows["name"]."_sortable_container\">";
+                         <div class = \"sortableContainerCloned\" id = \"".$rows["category_title"]."_sortable_container_cloned\"></div>
+                         <div class = \"sortableContainer\" id = \"".$rows["category_title"]."_sortable_container\">";
                 if ($rows['filename']==NULL) continue;
         }
 
@@ -93,11 +94,11 @@
 
         //per image
         $output.= "<div class = \"onesection left\"
-                  data-category = \"".$rows["name"]."\"
+                  data-category = \"".$rows["category_title"]."\"
                   data-caption = \"".$rows["caption"]."\"
                   data-filename = \"".$rows["filename"]."\"
                                     data-tags = \"".$rows["tags"]."\"
-                  data-added = \"".$rows["date_added"]."\"
+                  data-added = \"".$rows["photo_created_at"]."\"
                   data-taken = \"".$rows["date_taken"]."\"
                   data-aperature = \"".$rows["f_number"]."\"
                   data-exposuretime = \"".$rows["exposure_time"]."\"
@@ -106,7 +107,7 @@
                         <button class = \"standardButton delete\" title = \"delete this image\">X</button>
                         <ul class = \"photoInfo\">
                             <li>name: ".$rows["filename"]."</li>
-                            <li>date added: ".$rows["date_added"]."</li>
+                            <li>date added: ".$rows["created_at"]."</li>
                             <li>date taken: ".$exif['date_taken']."</li>
                             <li>aperature: ".$exif['f_number']."</li>
                             <li>shutter speed: ".$exif['exposure_time']."</li>
@@ -120,10 +121,10 @@
                   }
                 }
                         $output.="</ul>
-            <img class = \"sortimage\" data-filename = \"".$rows["filename"]."\" data-imgid = \"".$rows["img_id"]."\"src = \"images/blank.png\" style = \"background-image: url(photothumbs/".$rows["filename"].")\" alt = \"\"/><br/>
+            <img class = \"sortimage\" data-filename = \"".$rows["filename"]."\" data-imgid = \"".$rows["photo_id"]."\"src = \"images/blank.png\" style = \"background-image: url(photothumbs/".$rows["filename"].")\" alt = \"\"/><br/>
               </div>";
 
-        $oldcategory = $rows["name"];
+        $oldcategory = $rows["category_title"];
 
         $counter++;
       }

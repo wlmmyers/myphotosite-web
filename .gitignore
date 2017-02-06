@@ -9,6 +9,11 @@
 /test/tmp/
 /test/version_tmp/
 /tmp/
+/photos
+/photothumbs
+/php/cache/
+*.DS_Store
+dbConnection.php
 
 # Used by dotenv library to load environment variables.
 # .env

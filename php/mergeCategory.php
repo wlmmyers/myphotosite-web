@@ -11,14 +11,14 @@ extract( $_POST );
             echo $e->getMessage();
         }
 
-        $sqltwo = "DELETE FROM categories WHERE name = :one";
+        $sqltwo = "DELETE FROM categories WHERE title = :one";
         $statementtwo = $connection->prepare($sqltwo);
         $statementtwo->bindParam(':one', $one, PDO::PARAM_STR);
 
         if($statementtwo->execute())
         {
 
-            $sqlone = "UPDATE phototable SET category = :two WHERE category = :one";
+            $sqlone = "UPDATE photos SET category = :two WHERE category = :one";
             $statementone = $connection->prepare($sqlone);
             $statementone->bindParam(':one', $one, PDO::PARAM_STR);
             $statementone->bindParam(':two', $two, PDO::PARAM_STR);

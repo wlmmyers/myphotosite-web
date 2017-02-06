@@ -1,9 +1,5 @@
 <?php
 
-//////////////////////////////////////////////////////////////
-////////////////////// DATABASE STUFF ////////////////////////
-//////////////////////////////////////////////////////////////
-
   extract( $_POST );
     require_once 'dbConnection.php';
 
@@ -18,7 +14,7 @@
 
     $data = preg_replace( "/\r|\n/", "", $data );
 
-  $sql = "UPDATE phototable SET comments = :comments WHERE filename = :filename";
+  $sql = "UPDATE photos SET comments = :comments WHERE filename = :filename";
 
     $statement = $connection->prepare($sql);
   $statement->bindParam(':comments', $data, PDO::PARAM_STR);

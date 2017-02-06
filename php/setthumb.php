@@ -1,9 +1,5 @@
 <?php
 
-//////////////////////////////////////////////////////////////
-////////////////////// DATABASE STUFF ////////////////////////
-//////////////////////////////////////////////////////////////
-
   extract( $_POST );
     require_once 'dbConnection.php';
 
@@ -15,7 +11,7 @@
     }
 
 
-  $sql = "UPDATE categories SET thumb = :thumb WHERE name = :category";
+  $sql = "UPDATE categories SET thumb = :thumb WHERE title = :category";
 
   $statement = $connection->prepare($sql);
   $statement->bindParam(':thumb', $thumb, PDO::PARAM_STR);
