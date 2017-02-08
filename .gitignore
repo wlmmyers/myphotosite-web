@@ -14,6 +14,7 @@
 /php/cache/
 *.DS_Store
 dbConnection.php
+/node_modules/
 
 # Used by dotenv library to load environment variables.
 # .env

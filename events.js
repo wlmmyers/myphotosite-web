@@ -202,7 +202,12 @@ $('#slideshowcontainer .bigarrowright,#slideshowcontainer .bigarrowleft').click(
 $('#largesingleimage').draggable({ scroll: false });
 
 $('#largesingleimage').dblclick(function () {
-  ps.fn.zoomImage.zoomOut();
+  if (ps.o.zoomData.isZoomed) {
+    ps.fn.zoomImage.zoomOut();
+  } else {
+    ps.o.zoomData.fromButton = true;
+    ps.fn.zoomImage.zoomIn();
+  }
 });
 
 $('#imgscreen').click(function (event) {
@@ -426,12 +431,12 @@ $(document).on('click','body', ps.events.closingWelcomeScreen);
 
 
 
-//  ██████╗ ██╗  ██╗ ██████╗ ████████╗ ██████╗    ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗   ███████╗██╗   ██╗███████╗███╗   ██╗████████╗███████╗
-//  ██╔══██╗██║  ██║██╔═══██╗╚══██╔══╝██╔═══██╗  ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝   ██╔════╝██║   ██║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
-//  ██████╔╝███████║██║   ██║   ██║   ██║   ██║  ██║   ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗  █████╗  ██║   ██║█████╗  ██╔██╗ ██║   ██║   ███████╗
-//  ██╔═══╝ ██╔══██║██║   ██║   ██║   ██║   ██║  ██║   ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║  ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ╚════██║
-//  ██║   ██║  ██║╚██████╔╝   ██║   ╚██████╔╝  ╚██████╗╚██████╔╝██║ ╚████║██║   ██║╚██████╔╝  ███████╗ ╚████╔╝ ███████╗██║ ╚████║   ██║   ███████║
-//  ╚═╝   ╚═╝  ╚═╝ ╚═════╝  ╚═╝  ╚═════╝    ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝   ╚═╝ ╚═════╝   ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
+//  ██████╗ ██╗  ██╗ ██████╗ ████████╗ ██████╗    ██████╗ ██████╗  ███╗   ██╗███████╗██╗ ██████╗   ███████╗██╗   ██╗███████╗███╗   ██╗████████╗███████╗
+//  ██╔══██╗██║  ██║██╔═══██╗╚══██╔══╝██╔═══██╗  ██╔════╝ ██╔═══██╗████╗  ██║██╔════╝██║██╔════╝   ██╔════╝██║   ██║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
+//  ██████╔╝███████║██║   ██║   ██║   ██║   ██║  ██║      ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗  █████╗  ██║   ██║█████╗  ██╔██╗ ██║   ██║   ███████╗
+//  ██╔═══╝ ██╔══██║██║   ██║   ██║   ██║   ██║  ██║      ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║  ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ╚════██║
+//  ██║     ██║  ██║╚██████╔╝   ██║   ╚██████╔╝  ╚██████╗ ╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝  ███████╗ ╚████╔╝ ███████╗██║ ╚████║   ██║   ███████║
+//  ╚═╝     ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝    ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝   ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
 //
 
 
@@ -694,7 +699,7 @@ ps.events.sortimageThumbnailAction = function (e) {
   var posX = $(this).offset().left, posY = $(this).offset().top;
   var percent = ((e.pageX - posX) / $(this).width());
 
-  if (e.ctrlKey) {
+  if (e.ctrlKey || e.metaKey) {
     ps.fn.setUniversalThumb(filename);
     return false;
   }
@@ -1005,7 +1010,7 @@ $(document).on('click', '.hint', function () {
 });
 
 $('#dialog-config').on('mousedown', '.sortableContainer .sortimage', function (e) {
-  if (e.ctrlKey) {
+  if (e.ctrlKey || e.metaKey) {
     $(this).toggleClass('selected');
     if ($('#dialog-config .sortableContainer .onesection:not([data-hidden=true])').children('.sortimage.selected').length === 0) ps.fn.closeNotification();
     else if (!ps.fn.isNotificationShown()) ps.fn.displaySelectedConfigPhotosOptions();
@@ -1038,7 +1043,7 @@ $('#dialog-config').on('mousedown', '.sortableContainer .sortimage', function (e
 });
 
 $('#dialog-config').on('click', '.sortableContainer .sortimage', function (e) {
-  if (e.shiftKey && e.ctrlKey) {
+  if (e.shiftKey && (e.ctrlKey || e.metaKey)) {
     window.location.href = "#slideshow&pid=" + $(this).attr('data-filename') + "&cat=" + $(this).parent().attr('data-category');
     $('.configDialog,.ui-widget-overlay').fadeOut();
     $('#slideshowcontainer .closebutton').attr('data-action', 'backtophotoconfig');
@@ -1047,7 +1052,7 @@ $('#dialog-config').on('click', '.sortableContainer .sortimage', function (e) {
 
 $(document).on('keydown', function (e) {
   if ($('#dialog-config').isShown()) {
-    if (e.ctrlKey && e.which === 65) { //"a" key
+    if ((e.ctrlKey || e.metaKey) && e.which === 65) { //"a" key
       var $sortimage = $('#dialog-config .sortableContainer .onesection:not([data-hidden=true])').children('.sortimage')
       if ($sortimage.filter('.selected').length === 0) {
         $sortimage.addClass('selected');
@@ -1254,7 +1259,7 @@ $(document).on('change', 'input.autologin', function () {
 //  ██╗  ██╗███████╗██╗   ██╗██████╗  ██████╗  █████╗ ██████╗ ██████╗   ███████╗██╗   ██╗███████╗███╗   ██╗████████╗███████╗
 //  ██║ ██╔╝██╔════╝╚██╗ ██╔╝██╔══██╗██╔═══██╗██╔══██╗██╔══██╗██╔══██╗  ██╔════╝██║   ██║██╔════╝████╗  ██║╚══██╔══╝██╔════╝
 //  █████╔╝ █████╗   ╚████╔╝ ██████╔╝██║   ██║███████║██████╔╝██║  ██║  █████╗  ██║   ██║█████╗  ██╔██╗ ██║   ██║   ███████╗
-//  ██╔═██╗ ██╔══╝  ╚██╔╝  ██╔══██╗██║   ██║██╔══██║██╔══██╗██║  ██║  ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ╚════██║
+//  ██╔═██╗ ██╔══╝    ╚██╔╝  ██╔══██╗██║   ██║██╔══██║██╔══██╗██║  ██║  ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║   ╚════██║
 //  ██║  ██╗███████╗   ██║   ██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝  ███████╗ ╚████╔╝ ███████╗██║ ╚████║   ██║   ███████║
 //  ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝   ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
 //
@@ -1268,7 +1273,7 @@ $(document).on('keydown', 'input:not(.renameCategoryField),textarea:not(#noteTex
 });
 
 $(document).on('keydown', '#noteTextarea', function (e) {
-  if (e.which == 13 && e.ctrlKey) $(this).parents('.dialog').siblings('.ui-dialog-buttonpane').find('button').eq(0).click();
+  if (e.which == 13 && (e.ctrlKey || e.metaKey)) $(this).parents('.dialog').siblings('.ui-dialog-buttonpane').find('button').eq(0).click();
 });
 
 $(document).on('keyup', function (e) {

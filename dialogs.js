@@ -10,6 +10,7 @@ ps.dialogs.$photoconfig = $("#dialog-config").dialog({
     if ($('.settingsDialog').css('display') == 'block') ps.dialogs.$settings.dialog('close');
     ps.fn.loadingStart($(this), 60, 500);
     ps.fn.refreshPhotoConfigData();
+    ps.fn.hideHint();
     ps.fn.addDialogHint($(this), 'Hold <span class = \'italic\'>Alt</span> to make transparent');
     ps.fn.toggleConfigThumbnailAction('disable');
     $('#configSearch-searchText').val('');

@@ -84,7 +84,7 @@ var ps = {
       'body': {text: 'Hi There! Welcome to a demo of what\'s soon to be <i>MyPhotosite.me</i>. <br/><br/>This site will provide the aspiring photographer or established pro the ability to manage and showcase their photography to the masses in a unique, comepletely customizable manner. <br/><br/>The administrator features of the site have been unlocked for your enjoyment, and some hints have been added to help you along your way.' ,width: 470, displayedOnce: false},
       'img.settings' : {text: 'Click here to open the settings dialog', width: 300, displayedOnce: false},
       '#openPhotoConfig button' : {text: 'Click here to open the photo config dialog.', displayedOnce: false},
-      '.configDialog' : {text: 'Here, you can manage your photos. In addition to the many options presented, try dragging images to sort them within their categories or using Ctrl or Shift to select multiple images.', width: 300, displayedOnce: false},
+      '.configDialog' : {text: 'Here, you can manage your photos. In addition to the many options presented, try dragging images to sort them within their categories or using Ctrl/Cmd or Shift to select multiple images.', width: 300, displayedOnce: false},
       'button:contains("Toggle Info")' : {text: 'Click here to display your photos\' metadata. Try filtering the photos by their metadata using the "Filter" box above!', width: 400, displayedOnce: false},
       '.ui-dialog-title:contains("Photo Configuration")' : {text: 'Double-click the titlebar to toggle a larger view.', width: 400, displayedOnce: false},
       '.settingsDialog' : {text: 'In this dialog, you can alter the appearance of the site. Try switching to a different section using the navigation menu at the bottom of the page.', width: 300, displayedOnce: false},
@@ -587,7 +587,6 @@ var ps = {
       return images;
     },
     hideHint: function(selector){
-      console.log('hidehint');
       var $hint;
       if(selector) $hint = $('.hint[data-associated-selector="' + selector + '"]');
       else $hint = $('.hint');
