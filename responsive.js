@@ -1286,14 +1286,14 @@ var ps = {
       $('.sortableContainerCloned').show();
     },
     sortCategories: function () {
-      var catsortArray = {};
+      var positions = {};
       $('.categoryHeader').each(function (index) {
-        catsortArray[$(this).parent().find('.cat_id_field').val()] = index;
+        positions[$(this).attr('data-catid')] = index;
       });
       $.ajax({
         type: "POST",
-        url: 'php/performcatsort.php',
-        data: { 'sort': catsortArray }
+        url: 'php/catSort.php',
+        data: { 'sort': positions }
       }).done(function (data) {
       }).fail(function () { alert("error"); return false; });
     },
@@ -1969,6 +1969,7 @@ $(window).bind('hashchange', function () {
 
         $('#slideshowcontainer').fadeOut('fast', function () {
           ps.fn.killSlideshowView();
+          $('#bodyScreen').show();
           $('.infopane').css('background-color', ps.o.config['request' + 'AccentColor']);
           $('.infopane h3').text('Request');
           $('.infopane').fadeIn('fast');

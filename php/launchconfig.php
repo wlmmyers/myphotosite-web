@@ -12,7 +12,7 @@
 
   $sql = "SELECT categories.hidden, categories.saveable, categories.defaultView,
     categories.commentsEnabled, categories.toggleCaption, categories.title AS category_title,
-    categories.id, categories.created_at AS category_created_at,
+    categories.id AS category_id, categories.created_at AS category_created_at,
     photos.filename, photos.camera_make, photos.camera_model, photos.exposure_time,
     photos.f_number, photos.date_taken, photos.iso, photos.focal_length, photos.caption,
     photos.created_at AS photo_created_at, photos.tags, photos.id AS photo_id
@@ -76,7 +76,6 @@
                                 <button class = \"thumbnaillarger standardButton\" title = \"make thumbnails larger\">+</button>
                                 <button class = \"thumbnailsmaller standardButton\" title = \"make thumbnails smaller\">-</button>
                              </div>
-                             <input class = \"cat_id_field\" name = \"catid[]\" type = \"hidden\" value=\"".$rows["category_id"]."\"/>
                          </section>
                          <div class = \"sortableContainerCloned\" id = \"".$rows["category_title"]."_sortable_container_cloned\"></div>
                          <div class = \"sortableContainer\" id = \"".$rows["category_title"]."_sortable_container\">";

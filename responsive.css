@@ -376,7 +376,7 @@ h4{
 }
 
 .thumbcontent.loading{
-  background-image: url(/images/win8loader3.gif) !important;
+  background-image: url(images/win8loader3.gif) !important;
   display: block;
   background-position: 50% 50% !important;
   background-size: 20% !important;
@@ -568,7 +568,7 @@ textarea{
 }
 
 .loading{
-  background-image: url(/images/win8loader3.gif) !important;
+  background-image: url(images/win8loader3.gif) !important;
   background-position: 50% 50% !important;
   background-size: 30%;
   background-repeat: no-repeat !important;

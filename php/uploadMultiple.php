@@ -24,21 +24,21 @@
     $tempname = $_FILES['file']['tmp_name'][$count];
 
     if($filename && ($filename != '')) {
-      $exif_ifd0 = exif_read_data ( $tempname ,'IFD0' ,0 ) ? exif_read_data ( $tempname ,'IFD0' ,0 ) : [ "dummy" => "dumb"];
-      $exif_exif = exif_read_data ( $tempname ,'EXIF' ,0 ) ? exif_read_data ( $tempname ,'EXIF' ,0 ) : [ "dummy" => "dumb"];
-
-      $exif_make = array_key_exists('Make', $exif_ifd0) ? $exif_ifd0['Make'] : '';
-      $exif_model = array_key_exists('Model', $exif_ifd0) ? $exif_ifd0['Model'] : '';
-      $exif_exposuretime = array_key_exists('ExposureTime', $exif_exif) ? $exif_exif['ExposureTime'] : '';
-      $exif_fnumber = array_key_exists('FNumber', $exif_exif) ? $exif_exif['FNumber'] : '';
-      $exif_iso = array_key_exists('ISOSpeedRatings', $exif_exif) ? $exif_exif['ISOSpeedRatings'] : '';
-      $exif_date = array_key_exists('DateTime', $exif_ifd0) ? $exif_ifd0['DateTime'] : '';
-      $focal_length_raw = array_key_exists('FocalLength', $exif_exif) ? $exif_exif['FocalLength'] : '';
+      $metadata = exif_read_data($tempname, 0, true);
+      $ifd0 = $metadata['IFD0'];
+      $exif = $metadata['EXIF'];
+      $exif_make = array_key_exists('Make', $ifd0) ? $ifd0['Make'] : '';
+      $exif_model = array_key_exists('Model', $ifd0) ? $ifd0['Model'] : '';
+      $exif_exposuretime = array_key_exists('ExposureTime', $exif) ? $exif['ExposureTime'] : '';
+      $exif_fnumber = array_key_exists('FNumber', $exif) ? $exif['FNumber'] : '';
+      $exif_iso = array_key_exists('ISOSpeedRatings', $exif) ? $exif['ISOSpeedRatings'] : '';
+      $exif_date = array_key_exists('DateTime', $ifd0) ? $ifd0['DateTime'] : '';
+      $focal_length_raw = array_key_exists('FocalLength', $exif) ? $exif['FocalLength'] : '';
 
       $fone = explode('/',$exif_fnumber);
       $ftwo = explode('/',$exif_fnumber);
-      $aperature = array_key_exists('FNumber', $exif_exif) ? (int)$fone[0]/(int)$ftwo[1] : '';
-      $focal_length = array_key_exists('FocalLength', $exif_exif) ? substr($focal_length_raw, 0, strrpos($focal_length_raw,'/')) : '';
+      $aperature = array_key_exists('FNumber', $exif) ? (int)$fone[0]/(int)$ftwo[1] : '';
+      $focal_length = array_key_exists('FocalLength', $exif) ? substr($focal_length_raw, 0, strrpos($focal_length_raw,'/')) : '';
 
       $filename = str_replace(" ", "_", $filename);
 

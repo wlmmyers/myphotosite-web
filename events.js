@@ -999,9 +999,9 @@ $(document).on('click', '#globalNotification .closeButton', function () {
   ps.fn.closeNotification();
 });
 
-$(document).on('click', '.hint .closeButton', function () {
+$(document).on('click', '.hint', function () {
   var $that = $(this);
-  $(this).parent().fadeOut(function(){ $that.remove()});
+  $(this).fadeOut(function(){ $that.remove()});
 });
 
 $('#dialog-config').on('mousedown', '.sortableContainer .sortimage', function (e) {
