@@ -81,18 +81,19 @@ var ps = {
     },
     hints: {
       //selector to place tip after : hint content
-      'body': {text: 'Hi There! Welcome to a demo of what\'s soon to be <i>MyPhotosite.me</i>. <br/><br/>This site will provide the aspiring photographer or established pro the ability to manage and showcase their photography to the masses in a unique, comepletely customizable manner. <br/><br/>The administrator features of the site have been unlocked for your enjoyment, and some hints have been added to help you along your way.' ,width: 470, displayedOnce: false},
-      'img.settings' : {text: 'Click here to open the settings dialog', width: 300, displayedOnce: false},
-      '#openPhotoConfig button' : {text: 'Click here to open the photo config dialog.', displayedOnce: false},
-      '.configDialog' : {text: 'Here, you can manage your photos. In addition to the many options presented, try dragging images to sort them within their categories or using Ctrl/Cmd or Shift to select multiple images.', width: 300, displayedOnce: false},
-      'button:contains("Toggle Info")' : {text: 'Click here to display your photos\' metadata. Try filtering the photos by their metadata using the "Filter" box above!', width: 400, displayedOnce: false},
-      '.ui-dialog-title:contains("Photo Configuration")' : {text: 'Double-click the titlebar to toggle a larger view.', width: 400, displayedOnce: false},
-      '.settingsDialog' : {text: 'In this dialog, you can alter the appearance of the site. Try switching to a different section using the navigation menu at the bottom of the page.', width: 300, displayedOnce: false},
-      '.codeDialog' : {text: 'This dialog allows you to restrict access to certain categories. When the category is marked as "hidden" in the Photo Config dialog, entering it\'s name here will reveal it. Try typing "tilt shift" to reveal that hidden category.', width: 400, displayedOnce: false},
-      'URL_bar' : {text: 'If this URL is given to a vistor, they will see the "tilt shift" category immediately!', width: 300, displayedOnce: false},
-      '.contentpane:last-child' : {text: 'Mouseover a pane to see the photos within.', displayedOnce: false},
-      '#slideshowcontainer .switchphotodisplay' : {text: 'Click here to switch views.', displayedOnce: false},
-      '#codeitem' : {text: 'Click here to reveal a hidden category.', width: 300, displayedOnce: false}
+      //note: selector is currently used as a unique identifier for executing callbacks after hint close
+      'body': {text: 'Hi There! Welcome to a demo of what\'s soon to be <i>MyPhotosite.me</i>. <br/><br/>This site will provide the aspiring photographer or established pro the ability to manage and showcase their photography to the masses in a unique, comepletely customizable manner. <br/><br/>The administrator features of the site have been unlocked for your enjoyment, and some hints have been added to help you along your way.' ,width: 470, onCloseCallback: {fn: 'onWelcomeHintClose'}},
+      'img.settings' : {text: 'Click here to open the settings dialog', width: 300},
+      '#openPhotoConfig button' : {text: 'Click here to open the photo config dialog.'},
+      '.configDialog' : {text: 'Here, you can manage your photos. In addition to the many options presented, try dragging images to sort them within their categories or using Ctrl/Cmd or Shift to select multiple images.', width: 300},
+      'button:contains("Toggle Info")' : {text: 'Click here to display your photos\' metadata. Try filtering the photos by their metadata using the "Filter" box above!', width: 400},
+      '.ui-dialog-title:contains("Photo Configuration")' : {text: 'Double-click the titlebar to toggle a larger view.', width: 400},
+      '.settingsDialog' : {text: 'In this dialog, you can alter the appearance of the site. Try switching to a different section using the navigation menu at the bottom of the page.', width: 300},
+      '.codeDialog' : {text: 'This dialog allows you to restrict access to certain categories. When the category is marked as "hidden" in the Photo Config dialog, entering it\'s name here will reveal it. Try typing "tilt shift" to reveal that hidden category.', width: 400},
+      'URL_bar' : {text: 'If this URL is given to a vistor, they will see the "tilt shift" category immediately!', width: 300},
+      '.contentpane:last-child' : {text: 'Mouseover a pane to see the photos within.'},
+      '#slideshowcontainer .switchphotodisplay' : {text: 'Click here to switch views.'},
+      '#codeitem' : {text: 'Click here to reveal a hidden category.', width: 300}
     },
     //[selector, regex, message, required]
     validationData: [
@@ -517,7 +518,7 @@ var ps = {
         ps.fn.log('Hint from selector "' + selector + '" would be outside of the visible page area. Not displaying.');
         return;
       }
-      if(!ps.o.hints[selector] || ps.o.hints[selector].displayedOnce === false){
+      if(!ps.o.hints[selector] || !ps.o.hints[selector].displayedOnce){
         this.displayHintTimeout = window.setTimeout(function(){
           $hint.attr('data-associated-selector', selector).css({'left': where.left + 'px', 'top': where.top + 'px'}).fadeIn();
           clearTimeout(this.displayHintTimeout);
@@ -853,6 +854,22 @@ var ps = {
         ps.v.notifyTimeout = window.setTimeout(ps.fn.closeNotification, time * 1000);
       }
 
+    },
+    onWelcomeHintClose: function() {
+      ps.v.firstHintInterval = window.setInterval(function(){
+        if (ps.fn.isImageLoaded($('img.settings')[0])) {
+          ps.fn.displayHint('img.settings','right',0, true, null, 1000);
+          ps.fn.displayHint('#codeitem','bottom',0, true);
+          clearInterval(ps.v.firstHintInterval);
+        }
+      }, 500);
+      ps.v.paneHintInterval = window.setInterval(function(){
+        if ($('.contentpane').length > 0 && ps.fn.urlvars().section === 'photos') {
+          ps.fn.displayHint('.contentpane:last-child','top',0, true, null, 1000, '.contentpane', 'mouseenter');
+          clearInterval(ps.v.paneHintInterval);
+          ps.fn.toggleContentPaneMouseoverAbility(true);
+        }
+      }, 500);
     },
     orientateLargeImage: function ($image, whetherToFade) {
       $image.css({ 'height': '0px', 'width': '' });
@@ -1405,6 +1422,17 @@ var ps = {
       if (!currentlyActivated && $element) $element.addClass('activated');
 
     },
+    toggleContentPaneMouseoverAbility: function(activate) {
+      if (activate) {
+        $(document).on('mouseenter', '.contentpane', ps.events.contentPaneMouseover);
+        $(document).on('mouseleave', '.contentpane', ps.events.contentPaneMouseleave);
+        $(document).on('click', '.contentpane', ps.events.contentPaneClick);
+      } else {
+        $(document).off('mouseenter', '.contentpane', ps.events.contentPaneMouseover);
+        $(document).off('mouseleave', '.contentpane', ps.events.contentPaneMouseleave);
+        $(document).off('click', '.contentpane', ps.events.contentPaneClick);
+      }
+    },
     toUnderscores: function (old) {
       var a = old.split(' ');
       for (var x = 0; x < a.length; x++) a[x] = a[x].charAt(0).toLowerCase() + a[x].substring(1);
@@ -1722,11 +1750,7 @@ $(document).ready(function () {
 
 $(window).load(function(){
   ps.fn.displayHint('body', 'center modal', 0, false);
-
-  $(document).off('mouseenter', '.contentpane', ps.events.contentPaneMouseover);
-  $(document).off('mouseleave', '.contentpane', ps.events.contentPaneMouseleave);
-  $(document).off('click', '.contentpane', ps.events.contentPaneClick);
-
+  ps.fn.toggleContentPaneMouseoverAbility(!!ps.fn.inUrl('nohints'));
 });
 
 $(window).bind('hashchange', function () {

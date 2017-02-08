@@ -83,18 +83,13 @@ ps.dialogs.$settings = $("#dialog-settings").dialog({
     if (ps.fn.urlvars().section === 'photos') ps.fn.removeAddedPanes();
     if ($('.configDialog').isShown()) ps.dialogs.$photoconfig.dialog('close');
     ps.fn.setSettings(ps.fn.urlvars().section);
-
-    $(document).off('mouseenter', '.contentpane', ps.events.contentPaneMouseover);
-    $(document).off('mouseleave', '.contentpane', ps.events.contentPaneMouseleave);
-    $(document).off('click', '.contentpane', ps.events.contentPaneClick);
+    ps.fn.toggleContentPaneMouseoverAbility(false);
 
     ps.fn.displayHint('.settingsDialog', 'left', 0, true, 1000, 'button');
     if(ps.fn.urlvars().section === 'photos') ps.fn.displayHint('#openPhotoConfig button', 'right', 0, true, 3000, 'button');
   },
   close: function () {
-    $(document).on('mouseenter', '.contentpane', ps.events.contentPaneMouseover);
-    $(document).on('mouseleave', '.contentpane', ps.events.contentPaneMouseleave);
-    $(document).on('click', '.contentpane', ps.events.contentPaneClick);
+    ps.fn.toggleContentPaneMouseoverAbility(true);
     ps.fn.closeNotification();
     ps.fn.hideHint();
   },

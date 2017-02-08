@@ -6,7 +6,6 @@ $(document).on('a', 'click', function (e) {
 });
 
 ps.events.contentPaneMouseover = function (e) {
-
   if (ps.o.categoryData[this.id].defaultView == 'slider') {
     ps.fn.notify('Click to open the Slider view', '', 0);
   } else {
@@ -115,9 +114,9 @@ $(document).on('mousewheel', '.contentpane', function (event, delta) {
 
 });
 
-$(document).on('mouseenter', '.contentpane', ps.events.contentPaneMouseover);
-$(document).on('mouseleave', '.contentpane', ps.events.contentPaneMouseleave);
-$(document).on('click', '.contentpane', ps.events.contentPaneClick);
+/*
+ *  Content pane events are toggled on and off using ps.fn.toggleContentPaneMouseoverAbility()
+ */
 
 $(document).on('click', '.thumbcontent', function () {
   var parentid = $(this).parent().attr('id');
@@ -404,30 +403,6 @@ $(document).on('click', 'a.editComment', function () {
   $('#comment-dialog textarea.name').val(ps.o.picsComments[ps.fn.urlvars().pid][ps.fn.lookupComment($(this).attr('data-commentid'))].name);
   return false;
 });
-
-ps.events.closingWelcomeScreen = function(e){
-  ps.fn.hideHint('body');
-
-  ps.v.firstHintInterval = window.setInterval(function(){
-    if (ps.fn.isImageLoaded($('img.settings')[0])) {
-      ps.fn.displayHint('img.settings','right',0, true, null, 1000);
-      ps.fn.displayHint('#codeitem','bottom',0, true);
-      clearInterval(ps.v.firstHintInterval);
-    }
-  }, 500);
-  ps.v.paneHintInterval = window.setInterval(function(){
-    if ($('.contentpane').length > 0 && ps.fn.urlvars().section === 'photos') {
-      ps.fn.displayHint('.contentpane:last-child','top',0, true, null, 1000, '.contentpane', 'mouseenter');
-      clearInterval(ps.v.paneHintInterval);
-      $(document).on('mouseenter', '.contentpane', ps.events.contentPaneMouseover);
-      $(document).on('mouseleave', '.contentpane', ps.events.contentPaneMouseleave);
-      $(document).on('click', '.contentpane', ps.events.contentPaneClick);
-    }
-  }, 500);
-  $(document).off('click','body', ps.events.closingWelcomeScreen);
-};
-
-$(document).on('click','body', ps.events.closingWelcomeScreen);
 
 
 
@@ -1006,7 +981,12 @@ $(document).on('click', '#globalNotification .closeButton', function () {
 
 $(document).on('click', '.hint', function () {
   var $that = $(this);
+  var callbackData = ps.o.hints[$(this).attr('data-associated-selector')].onCloseCallback;
+
   $(this).fadeOut(function(){ $that.remove()});
+  if (callbackData) {
+    ps.fn[callbackData.fn].apply(this, callbackData.args || []);
+  }
 });
 
 $('#dialog-config').on('mousedown', '.sortableContainer .sortimage', function (e) {
