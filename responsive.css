@@ -1042,8 +1042,8 @@ img.tilethumbnail{
 .selfimage{
   float: left;
   margin: 0;
-
-  height: 61.5%;
+  height: 100%;
+  width: 100%;
 }
 
 .selfpromote{
@@ -1061,9 +1061,13 @@ img.tilethumbnail{
   margin: 0 5px 0 0;
 }
 
-.selfimage img{
-  height: 100%;
-  display:block;
+.selfimage-img {
+  width: 100%;
+  height: 61.5%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url(images/IMG_6106.jpg);
+  background-position: center;
 }
 
 .submitdiv{
