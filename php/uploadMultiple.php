@@ -25,8 +25,8 @@
 
     if($filename && ($filename != '')) {
       $metadata = exif_read_data($tempname, 0, true);
-      $ifd0 = $metadata['IFD0'];
-      $exif = $metadata['EXIF'];
+      $ifd0 = boolval($metadata['IFD0']) ? $metadata['IFD0'] : array();
+      $exif = boolval($metadata['EXIF']) ? $metadata['EXIF'] : array();
       $exif_make = array_key_exists('Make', $ifd0) ? $ifd0['Make'] : '';
       $exif_model = array_key_exists('Model', $ifd0) ? $ifd0['Model'] : '';
       $exif_exposuretime = array_key_exists('ExposureTime', $exif) ? $exif['ExposureTime'] : '';
