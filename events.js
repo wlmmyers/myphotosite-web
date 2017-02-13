@@ -1296,10 +1296,6 @@ $(document).on('keyup', function (e) {
           else window.location.href = "#about";
         }
         break;
-      case 82:
-        if (window.location.hash == "#request") window.location.href = ps.v.photosHash;
-        else window.location.href = "#request";
-        break;
       case 18:
         if ($('.configDialog').isShown()) $('.configDialog').stop().fadeTo(100, 1);
         return false;
