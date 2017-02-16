@@ -682,7 +682,7 @@ var ps = {
       $element.removeClass('loading').addClass('loaded').css('background-size', 'initial');
     },
     loadThumbnail: function ($thumbelement, panetitle) {
-      var $placeholder = '<div class = "paneThumbPlaceholder"><h2>' + ps.fn.toDisplay(panetitle) + '</h2><p>Add a thumbnail for this pane in the Config dialog</p></div>';
+      var $placeholder = '<div class = "paneThumbPlaceholder"><h2>' + ps.fn.toDisplay(panetitle) + '</h2><p>Press "P" to add a thumbnail for this pane in the Config dialog</p></div>';
       if (ps.o.categoryData[panetitle] && ps.o.categoryData[panetitle].thumb) {
         var thumbimagepath = ps.o.categoryData[panetitle].thumb.image;
         var thumbimagepos = ps.o.categoryData[panetitle].thumb.position;

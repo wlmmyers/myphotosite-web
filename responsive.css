@@ -92,17 +92,17 @@ aside#status {
 .hint.center.modal {
   padding: 30px;
 }
-.hint: after {
+.hint:after {
   content: '';
   position: absolute;
   background-image: url(images/arrow.png);
   width: 27px; height: 30px;
   background-repeat: no-repeat;
 }
-.hint.center: after {
+.hint.center:after {
   background-image: none;
 }
-.hint.right: after {
+.hint.right:after {
   margin: -15px 0 0 -23px;
   top: 50%;
   left: 0%;
@@ -110,7 +110,7 @@ aside#status {
   -ms-transform: rotate(135deg);
   -webkit-transform: rotate(135deg);
 }
-.hint.left: after {
+.hint.left:after {
   margin: -13px 0 0 -4px;
   top: 50%;
   left: 100%;
@@ -118,7 +118,7 @@ aside#status {
   -ms-transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
 }
-.hint.top: after {
+.hint.top:after {
   margin: -6px 0 0 -13px;
   top: 100%;
   left: 50%;
@@ -126,7 +126,7 @@ aside#status {
   -ms-transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
 }
-.hint.bottom: after {
+.hint.bottom:after {
   margin: -24px 0 0 -10px;
   top: 0%;
   left: 50%;
@@ -134,7 +134,7 @@ aside#status {
   -ms-transform: rotate(-135deg);
   -webkit-transform: rotate(-135deg);
 }
-.hint: hover {
+.hint:hover {
   opacity: 1.0;
 }
 .hint .closeButton {
@@ -147,7 +147,7 @@ aside#status {
   top: 5px;
   right: 8px;
 }
-.hint .closeButton: hover {
+.hint .closeButton:hover {
   background: hsla(0,0%,100%,0.3);
 }
 .panecontainer {
@@ -207,7 +207,7 @@ div.formrow {
   border: 1px solid #d3d3d3;
   background: #F7F7F7 50% 50% repeat-x;
 }
-.standardButton: hover {
+.standardButton:hover {
   border: 1px solid hsl(0, 0%, 63%);
   color: hsl(0, 0%, 0%);
   background: hsl(0, 0%, 86%);
@@ -217,7 +217,7 @@ div.formrow {
   margin-left: -2em;
   border: 0px;
 }
-.searchContainer .standardButton: hover {
+.searchContainer .standardButton:hover {
   border: 0px;
 }
 #configSearch-operator {
@@ -304,7 +304,7 @@ input[type=file] {
   margin: 0 -5px 0 5px;
   vertical-align: top;
 }
-#globalNotification .closeButton: hover {
+#globalNotification .closeButton:hover {
   background: hsla(0,0%,100%,0.3);
 }
 .alerticon {
@@ -869,7 +869,7 @@ img.tilethumbnail {
   font-size: 0.8em;
   line-height: 1.5em;
 }
-.imagetext .imagecomments .commentrow .name: before {
+.imagetext .imagecomments .commentrow .name:before {
   content: "- ";
 }
 .imagetext .imagecomments .commentrow hr {
@@ -901,7 +901,7 @@ img.tilethumbnail {
   display: none;
 }
 
-.pagearrows: hover {
+.pagearrows:hover {
   opacity: 0.85;
 
 }
@@ -924,7 +924,7 @@ img.tilethumbnail {
   border-bottom: 15px solid #AAA;
   border-top: 0px;
 }
-.arrowUp: hover {
+.arrowUp:hover {
   border-bottom: 15px solid #777;
 }
 
@@ -934,7 +934,7 @@ img.tilethumbnail {
   border-bottom: 0px;
   border-top: 15px solid #AAA;
 }
-.arrowDown: hover {
+.arrowDown:hover {
   border-top: 15px solid #777;
 }
 
@@ -1138,7 +1138,7 @@ a: visited {
   border: none;
 }
 
-a: hover {
+a:hover {
   text-decoration: none;
   border: none;
 }
@@ -1251,7 +1251,7 @@ img.settings {
   color: #666;
 }
 
-.photoInfo: hover {
+.photoInfo:hover {
   opacity: 0.8;
 }
 .photoTags {
@@ -1274,7 +1274,7 @@ img.settings {
   line-height: 2em;
 }
 
-input[type=button]: hover,button: hover {
+input[type=button]:hover,button:hover {
 
 }
 .configDialog {
@@ -1412,7 +1412,7 @@ input.renameCategoryField {
   -o-transition: opacity 0.3s linear;
   -ms-transition: opacity 0.3s linear;
 }
-.screen: hover {
+.screen:hover {
   opacity: 0.3;
 }
 .screen .inner {
@@ -1449,13 +1449,13 @@ input.renameCategoryField {
   width: 100%;
   font-size: 4em;
 }
-.onesection .delete.standardButton: hover {
+.onesection .delete.standardButton:hover {
   border: 1px solid hsl(0, 0%, 63%);
   color: hsl(0, 0%, 0%);
   background: hsl(0, 0%, 86%);
   opacity: 0.8;
 }
-.onesection .delete.standardButton.cover: hover {
+.onesection .delete.standardButton.cover:hover {
   color: hsl(0, 0%, 33%);
   cursor: pointer;
   border: 1px solid #d3d3d3;
@@ -1565,6 +1565,7 @@ img.sortimage.secret {
 .settingsDialog .ui-slider-handle {
   padding: 4px;
   margin: -4px 0 0 -15px;
+  text-decoration: none;
 }
 #paneExpandedSizeSlider .ui-slider-handle {
   width: 10px;
@@ -1602,7 +1603,7 @@ a.normalizeColors {
   margin-left: 5px;
   display: none;
 }
-a.normalizeColors: before {
+a.normalizeColors:before {
   content: '- '
 }
 
