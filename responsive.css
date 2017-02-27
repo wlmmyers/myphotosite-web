@@ -39,6 +39,10 @@ body {
   max-height: 750px;
 }
 
+#mobile-container {
+  display: none;
+}
+
 header {
   display: none;
   margin-top: auto;
@@ -1741,9 +1745,7 @@ a.normalizeColors:before {
 ////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////*/
 
-
-
-/* mobile*/
+/* Small desktop/tablet */
 @media screen and (max-width: 1240px) {
 
   body {
@@ -1765,28 +1767,66 @@ a.normalizeColors:before {
     font-size: 4em;
   }
   #status {
-     font-size: 4em;
+    font-size: 4em;
   }
-
   .panecontainer {
     height: 80%;
     top: 15%;
   }
-
   footer {
-     top: 96%;
+    top: 96%;
   }
-
   footer aside {
     display: none;
   }
-
   footer .menubar {
     width: 100%;
   }
-
   img.settings {
     display: none !important;
   }
 
 }
+
+/* Phone */
+/* TODO: choose more exact 'max-width' value */
+@media screen and (max-width: 760px) {
+
+  body {
+    padding: 0 !important;
+    overflow-y: auto;
+  }
+  #maincontainer {
+    display: none;
+  }
+  #mobile-container {
+    display: block;
+    position: relative;
+  }
+  header {
+    bottom: 84%;
+  }
+  h1#titleText {
+    font-size: 4em;
+  }
+  #status {
+    font-size: 4em;
+  }
+  .panecontainer {
+    height: 80%;
+    top: 15%;
+  }
+  footer {
+    top: 96%;
+  }
+  footer aside {
+    display: none;
+  }
+  footer .menubar {
+    width: 100%;
+  }
+  img.settings {
+    display: none !important;
+  }
+}
+
