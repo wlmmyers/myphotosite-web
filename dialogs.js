@@ -130,12 +130,11 @@ ps.dialogs.$login = $("#dialog-login").dialog({
   buttons: {
     "Submit": function () {
       if (($('#username').val() != '') && ($('#password').val() != '')) {
-        $.ajax({
-          type: "POST",
-          url: "php/login.php",
-          data: { 'user': $('#username').val(), 'pass': $('#password').val() }
+        ps.fn.api.post('php/login.php', {
+          'user': $('#username').val(),
+          'pass': $('#password').val()
         }).done(function (data) {
-          var result = $.parseJSON(data);
+          var result = data.message;
           if (result == "cleared") {
             if ($('#rememberMe').prop('checked')){
               localStorage.username = $('#username').val();
@@ -239,7 +238,12 @@ ps.dialogs.$addpane = $("#dialog-panetitle").dialog({
         var isHidden = $('#isHidden').is(':checked') ? 1 : 0;
         var isSaveable = $('#isSaveable').is(':checked') ? 1 : 0;
         if (ps.fn.validateStringAgainst(newpanetitle, ps.fn.getCategories())) {
-          $.getJSON('php/addCat.php', { 'category': newpanetitle, 'ishidden': isHidden, 'issaveable': isSaveable }, function (data) {
+          ps.fn.api.post('php/addCat.php', {
+            'category': newpanetitle,
+            'ishidden': isHidden,
+            'issaveable': isSaveable
+          }).done(function (data) {
+            data = data.message;
             if (data == 'Failed') {
               ps.fn.notify('Failed to add pane', 'error');
             }
@@ -324,11 +328,9 @@ ps.dialogs.$editcaption = $("#edit-caption-dialog").dialog({
       var caption = $('#edit-caption-dialog>textarea').val();
       $('.sortableContainer .sortimage[data-filename="'+ imagefor +'"').parent().attr('data-caption', caption);
       //change to only save THIS caption
-      $.ajax({
-        type: "POST",
-        url: 'php/updatecaptions.php',
-        data: { 'caption': caption, 'imagefor' : imagefor }
-      }).done(function (data) {
+      ps.fn.api.post('php/updatecaptions.php', {
+        'caption': caption,
+        'imagefor' : imagefor
       }).fail(function () { alert("error"); return false; });
       ps.o.picsCaptions[ps.fn.urlvars().pid] = caption;
       if(ps.fn.inUrl('slideshow')) ps.fn.updateImageText();
@@ -372,11 +374,11 @@ ps.dialogs.$comment = $("#comment-dialog").dialog({
         ps.o.photoData[cat][ps.fn.lookupPhoto(imagefor,cat)].comments = commentData;
         var commentString = JSON.stringify(commentData);
 
-        $.ajax({
-          type: "POST",
-          url: 'php/setcomments.php',
-          data: {'sessionid' : ps.fn.getCookie('sessionid'), 'imagefor': imagefor, 'data': commentString }
-        }).done(function (data) {
+        ps.fn.api.post('php/setcomments.php', {
+          'sessionid' : ps.fn.getCookie('sessionid'),
+          'imagefor': imagefor,
+          'data': commentString
+        }).done(function () {
           ps.fn.updateImageText();
           ps.fn.clearForm(ps.dialogs.$comment);
         }).fail(function () { alert("error"); return false; });
@@ -391,12 +393,12 @@ ps.dialogs.$comment = $("#comment-dialog").dialog({
 
 ps.dialogs.$note = $("#note-dialog").dialog({
   open: function () {
-    $.ajax({
-      type: "POST",
-      url: 'php/handleNote.php',
-      data: { 'action': 'get', 'note_id': 1 }
+    // TODO: first, cry. then, use a GET request here and remove `action` param
+    ps.fn.api.post('php/handleNote.php', {
+      'action': 'get',
+      'note_id': 1
     }).done(function (data) {
-      $('#noteTextarea').val(data);
+      $('#noteTextarea').val(data.result);
     }).fail(function () { alert("error"); return false; });
   },
   close: function () { },
@@ -404,11 +406,11 @@ ps.dialogs.$note = $("#note-dialog").dialog({
   hide: "fade", modal: true,
   buttons: {
     Save: function () {
-      $.ajax({
-        type: "POST",
-        url: 'php/handleNote.php',
-        data: { 'action': 'set', 'note_text': $('#noteTextarea').val(), 'note_id': 1 }
-      }).done(function (data) {
+      // TODO: remove `action` param
+      ps.fn.api.post('php/handleNote.php', {
+        'action': 'set',
+        'note_text': $('#noteTextarea').val(),
+        'note_id': 1
       }).fail(function () { alert("error"); return false; });
       $(this).dialog("close");
     },

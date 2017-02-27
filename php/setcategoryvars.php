@@ -1,5 +1,5 @@
 <?php
-   extract( $_GET );
+   extract( $_POST );
   require_once 'dbConnection.php';
 
    try {
@@ -30,19 +30,15 @@
   $statement->bindParam(':s', $config['saveable'], PDO::PARAM_STR);
   $statement->bindParam(':cat', $cat, PDO::PARAM_STR);
 
-   $statement->execute();
+  $statement->execute();
 
-   $result = $statement->fetch(PDO::FETCH_ASSOC);
+  $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-    if($result)
-    {
-      echo json_encode('success');
-
-    }
-    else
-    {
-      echo json_encode($sql);
-    }
+  if($result) {
+    echo json_encode( (object) array("message" => "Success") );
+  } else {
+    echo json_encode( (object) array("message" => "Failed") );
+  }
 
   $statement = NULL;
 

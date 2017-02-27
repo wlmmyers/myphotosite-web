@@ -104,5 +104,5 @@
   //future pass back of $skippedcount to display how many files were skipped
   //due to being in other categories
 
-  header('Location: ../index.htm');
+  header('Location: ../');
  ?>

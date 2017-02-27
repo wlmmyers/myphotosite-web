@@ -27,11 +27,11 @@
 
     if($result)
     {
-      echo json_encode("Added Config Data");
+      echo json_encode({ "message": "Success" });
     }
     else
     {
-      echo json_encode("Failed to add config data");
+      echo json_encode({ "message": "Failed" });
     }
 
         $connection = NULL;

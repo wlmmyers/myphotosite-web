@@ -28,7 +28,6 @@ $getid = $connection->prepare("SELECT id FROM categories WHERE title = :category
   $statement_four->bindParam(':category_id', $category_id, PDO::PARAM_STR);
 
   $statement_four->execute();
-
   $statement_four->setFetchMode(PDO::FETCH_ASSOC);
 
   while($rows = $statement_four->fetch()) {
@@ -37,9 +36,12 @@ $getid = $connection->prepare("SELECT id FROM categories WHERE title = :category
   }
 
   $statement->execute();
-  $statement_three->execute();
 
-  echo json_encode("Deleted");
+  if($statement_three->execute()) {
+    echo json_encode( (object) array("message" => "Success") );
+  } else {
+    echo json_encode( (object) array("message" => "Failed") );
+  }
 
   $connection = NULL;
 

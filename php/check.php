@@ -35,13 +35,13 @@
       $statement2 = $connection->prepare("INSERT INTO sessions (id, time) VALUES ('".$sessionid."', '".$time."' ) ");
       $statement2 -> execute();
 
-      echo json_encode("cleared");
+      echo json_encode( (object) array("message" => "cleared") );
     } else {
-      echo json_encode("illegal");
+      echo json_encode( (object) array("message" => "illegal") );
     }
 
   } else {
-    echo json_encode("failed");
+    echo json_encode( (object) array("message" => "Failed") );
   }
 
   $connection = NULL;

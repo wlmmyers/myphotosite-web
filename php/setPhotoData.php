@@ -29,13 +29,10 @@
 
   $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-  if($statement)
-  {
-    echo json_encode("Success");
-  }
-  else
-  {
-    echo json_encode("Failed");
+  if($result) {
+    echo json_encode( (object) array("message" => "Success") );
+  } else {
+    echo json_encode( (object) array("message" => "Failed") );
   }
 
   $statement = NULL;

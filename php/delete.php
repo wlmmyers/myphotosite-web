@@ -25,7 +25,12 @@
       unlink('../photothumbs/'.$data['filename']);
     }
   }
-  $statement->execute();
+
+  if($statement->execute()) {
+    echo json_encode( (object) array("message" => "Success") );
+  } else {
+    echo json_encode( (object) array("message" => "Failed") );
+  }
 
   $connection = NULL;
 

@@ -24,16 +24,16 @@
     $uservalid = true;
 
     if ($seshpass != $rows['pass']) {
-      echo json_encode('Incorrect username or password');
+      echo json_encode( (object) array("message" => "Incorrect username or password") );
     } else {
       setcookie("user", $seshuser, $hour, "/");
       setcookie("pass", $seshpass, $hour, "/");
       setcookie("user_id", $rows['id'], $hour, "/");
-      echo json_encode('cleared');
+      echo json_encode( (object) array("message" => "cleared") );
     }
   }
 
-  if (!$uservalid) echo json_encode('Incorrect username or password');
+  if (!$uservalid) echo json_encode( (object) array("message" => "Incorrect username or password") );
   $connection = NULL;
 
 ?>

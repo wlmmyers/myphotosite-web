@@ -1,14 +1,14 @@
 <?php
 
   extract( $_POST );
-    require_once 'dbConnection.php';
+  require_once 'dbConnection.php';
 
-    try {
-      $connection = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
-    }
-    catch(PDOException $e) {
-        echo $e->getMessage();
-    }
+  try {
+    $connection = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+  }
+  catch(PDOException $e) {
+      echo $e->getMessage();
+  }
 
   // TODO eek, refactor!
   $getid = $connection->prepare("SELECT id FROM categories WHERE title = :title");
@@ -26,20 +26,13 @@
 
   $statement->bindParam(':category_id', $category_id, PDO::PARAM_STR);
 
-   $statement->execute();
+  $statement->execute();
 
-   $result = $statement->fetch(PDO::FETCH_ASSOC);
-
-    if($result)
-    {
-      echo json_encode("Success");
-
-    }
-    else
-    {
-      echo json_encode("Failed");
-    }
-
+  if($result) {
+   echo json_encode( (object) array("message" => "Success") );
+  } else {
+   echo json_encode( (object) array("message" => "Failed") );
+  }
 
   $statement = NULL;
 

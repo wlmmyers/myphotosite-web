@@ -29,9 +29,9 @@
   $result = $statement->fetch(PDO::FETCH_ASSOC);
 
   if($result) {
-    echo json_encode("Success");
+    echo json_encode( (object) array("message" => "Success") );
   } else {
-    echo json_encode("Failed");
+    echo json_encode( (object) array("message" => "Failed") );
   }
 
   $statement = NULL;

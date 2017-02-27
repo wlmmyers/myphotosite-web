@@ -248,8 +248,13 @@ $(document).on('click', '#slideshowcontainer .savebutton', function () {
 
 $('#submitrequest').click(function (e) {
   if(ps.fn.validateForm($('#requestpane form.requestform'))){
-    $.getJSON('php/emailme.php', { 'type': 'request', 'requestedphoto': $('#request_requestedphoto').val(), 'email': $('#request_email').val(), 'comments': $('#request_comments').val() }, function (data) {
-      ps.fn.notify(data,'info');
+    ps.fn.api.post('php/emailme.php', {
+      'type': 'request',
+      'requestedphoto': $('#request_requestedphoto').val(),
+      'email': $('#request_email').val(),
+      'comments': $('#request_comments').val()
+    }).done(function (data) {
+      ps.fn.notify(data.message,'info');
     });
   }
 });
@@ -260,8 +265,12 @@ $('#clearrequest').click(function () {
 
 $('#submitfeedback').click(function () {
   if(ps.fn.validateForm($('#contactpane form.feedbackform'))){
-    $.getJSON('php/emailme.php', { 'type': 'feedback', 'name': $('#feedback_name').val(), 'comments': $('#feedback_comment').val() }, function (data) {
-      ps.fn.notify(data,'info');
+    ps.fn.api.post('php/emailme.php', {
+      'type': 'feedback',
+      'name': $('#feedback_name').val(),
+      'comments': $('#feedback_comment').val()
+    }).done(function(data) {
+      ps.fn.notify(data.message,'info');
     });
   }
 });
@@ -386,11 +395,12 @@ $(document).on('click', 'a.deleteComment', function () {
   delete ps.o.photoData[cat][ps.fn.lookupPhoto(imagefor,cat)]['comments'][ps.fn.lookupComment(id)];
   var commentData = ps.o.picsComments[imagefor];
   var commentString = JSON.stringify(commentData);
-  $.ajax({
-    type: "POST",
-    url: 'php/setcomments.php',
-    data: { 'imagefor': imagefor, 'data': commentString, 'action': 'delete', 'sessionid': ps.fn.getCookie('sessionid') }
-  }).done(function (data) {
+  // TODO: Use a DELETE request here, remove `action` param
+  ps.fn.api.post('php/setcomments.php', {
+    'imagefor': imagefor,
+    'data': commentString,
+    'action': 'delete',
+    'sessionid': ps.fn.getCookie('sessionid')
   }).fail(function () { alert("error"); return false; });
 
   ps.fn.updateImageText();
@@ -443,11 +453,10 @@ ps.events.renameCategory = function (e) {
   }
   else if (ps.fn.validateStringAgainst(tosubmit, ps.fn.getCategories())) {
     if (ps.fn.validateString(newname, 3, 16)) {
-      $.ajax({
-        type: "POST",
-        url: 'php/renameCat.php',
-        data: { 'title': old, 'newtitle': tosubmit }
-      }).done(function (data) {
+      ps.fn.api.post('php/renameCat.php', {
+        'title': old,
+        'newtitle': tosubmit
+      }).done(function () {
         uiAction();
         ps.fn.notify("Category renamed", '', 4, null, 'replace');
         if (tosubmit != old) {
@@ -482,10 +491,9 @@ $(document).on('blur', '.categoryHeader .renameCategoryField', ps.events.renameC
 $(document).on('click', '#mergeCategories', function () {
   var oldname = $(this).attr('data-oldname');
   var newname = $(this).attr('data-newname');
-  $.ajax({
-    type: "POST",
-    url: 'php/mergeCategory.php',
-    data: { 'one': oldname, 'two': newname }
+  ps.fn.api.post('php/mergeCategory.php', {
+    'one': oldname,
+    'two': newname
   }).done(function (data) {
     ps.o.photoData[newname] = ps.o.photoData[newname].concat(ps.o.photoData[oldname]);
     ps.fn.notify('Categories merged', '', 4, null, 'replace');
@@ -523,11 +531,7 @@ $('#globalNotification').on('click', '#revertThumb', function () {
       $(this).attr('data-imageurl', ps.o.categoryData[whichPane].thumb.image);
       thumbsArray[whichPane] = JSON.stringify({ "image": ps.o.categoryData[whichPane].thumb.image, "position": ps.o.categoryData[whichPane].thumb.position });
     });
-    $.ajax({
-      type: "POST",
-      url: 'php/setthumbs.php',
-      data: { 'thumbs': thumbsArray }
-    }).done(function (data) {
+    ps.fn.api.post('php/setthumbs.php', { 'thumbs': thumbsArray }).done(function (data) {
       //ps.fn.closeNotification(), $('#revertThumb').remove();
       //ps.fn.notify('Thumbnail updated. <a href=\'#\' id=\'revertThumb\' data-torevert=\'' + whichPane + '\' data-imgurl=\'' + imagesrc + '\' class=\'revertLink\'>Revert to original?</a>', '', 4);
     }).fail(function () { alert("error"); return false; });
@@ -536,10 +540,9 @@ $('#globalNotification').on('click', '#revertThumb', function () {
     $('#' + whichPane + " .thumbcontent").css({ 'background-image': 'url(' + ps.o.categoryData[whichPane].thumb.image + ')', 'background-position': ps.o.categoryData[whichPane].thumb.position });
     $('#' + whichPane + " .thumbcontent").attr('data-imageurl', ps.o.categoryData[whichPane].thumb.image);
     var thumbstring = JSON.stringify({ "image": ps.o.categoryData[whichPane].thumb.image, "position": ps.o.categoryData[whichPane].thumb.position });
-    $.ajax({
-      type: "POST",
-      url: 'php/setthumb.php',
-      data: { 'thumb': thumbstring, 'category': whichPane }
+    ps.fn.api.post('php/setthumb.php', {
+      'thumb': thumbstring,
+      'category': whichPane
     }).fail(function () { alert("error"); return false; });
   }
   return false;
@@ -562,10 +565,8 @@ $(document).on('click', '.categoryOptions>.deleteCatButton', function (e) {
 });
 
 $(document).on('click', 'a.deleteThisCategory', function (e) {
-  $.ajax({
-    type: "POST",
-    url: 'php/deleteCat.php',
-    data: { 'category': ps.v.catToDelete.name }
+  ps.fn.api.post('php/deleteCat.php', {
+    'category': ps.v.catToDelete.name
   }).done(function (data) {
     var category = ps.v.catToDelete.headerRow.attr('data-category');
     if (ps.o.categoryData[ps.v.catToDelete.name].hidden === '0') ps.fn.removePane(ps.v.catToDelete.name);
@@ -690,10 +691,9 @@ ps.events.sortimageThumbnailAction = function (e) {
 
     var thumbstring = JSON.stringify({ "image": imagesrc, "position": backposition });
 
-    $.ajax({
-      type: "POST",
-      url: 'php/setthumb.php',
-      data: { 'thumb': thumbstring, 'category': whichPane }
+    ps.fn.api.post('php/setthumb.php', {
+      'thumb': thumbstring,
+      'category': whichPane
     }).done(function (data) {
       ps.fn.closeNotification(), $('#revertThumb').remove();
       ps.fn.notify('Thumbnail updated. <a href=\'#\' id=\'revertThumb\' data-torevert=\'' + whichPane + '\' data-imgurl=\'' + imagesrc + '\' class=\'revertLink\'>Revert to original?</a>', '', 4);

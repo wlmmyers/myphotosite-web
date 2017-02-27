@@ -1,9 +1,9 @@
 <?php
 
-  if ($_GET['type'] == 'request') {
-    $filename = $_GET['requestedphoto'];
-    $email = $_GET['email'];
-    $comments = $_GET['comments'];
+  if ($_POST['type'] == 'request') {
+    $filename = $_POST['requestedphoto'];
+    $email = $_POST['email'];
+    $comments = $_POST['comments'];
 
     if ($filename!='') {
 
@@ -15,15 +15,15 @@
                  ."\n\nComments: ".$comments."";
 
        if (mail($to, $subject, $body))
-        echo json_encode("Request successfully sent");
+        echo json_encode({ "message": "Request successfully sent" } });
        else
-        echo json_encode("Request successfully sent");
-      } else echo json_encode("Invalid email address");
-    } else echo json_encode("The photo description field is looking empty");
+        echo json_encode({ "message": "Request successfully sent" });
+      } else echo json_encode({ "message": "Invalid email address" });
+    } else echo json_encode({ "message": "The photo description field is looking empty" });
 
-  } else if ($_GET['type'] == 'feedback') {
-    $name = $_GET['name'];
-    $comments = $_GET['comments'];
+  } else if ($_POST['type'] == 'feedback') {
+    $name = $_POST['name'];
+    $comments = $_POST['comments'];
 
     if ($comments!='') {
        $to = "wlmmyers@gmail.com";
@@ -31,13 +31,13 @@
        $body = "From ".$name.":\n\nComments: ".$comments."";
 
        if (mail($to, $subject, $body))
-        echo json_encode("Comment successfully sent");
+        echo json_encode({ "message": "Comment successfully sent" });
        else
-        echo json_encode("Comment successfully sent");
+        echo json_encode({ "message": "Comment successfully sent" });
     } else {
-      echo json_encode("Your comment field is looking blank");
+      echo json_encode({ "message": "Your comment field is looking blank" });
     }
   } else {
-    echo json_encode("Something went wrong");
+    echo json_encode({ "message": "Something went wrong" });
   }
 ?>

@@ -169,6 +169,40 @@ var ps = {
       if (ps.o.categoryData[ps.fn.urlvars().cat].toggleCaption == 'on') ps.fn.displaySliderCaption(ps.o.picsCaptions[filename]);
       window.location.href = '#slider&cat=' + ps.fn.urlvars().cat + '&pid=' + filename;
     },
+    api: {
+      get: function(url, params) {
+        var paramString = params ? '?' + $.param(params) : '',
+          options = {
+            headers: {
+              'Content-Type': 'application/json',
+              'PS-Tenant': ps.fn.tenant()
+            }
+          };
+
+        return ps.fn.api.send('GET', url + paramString, null, options);
+      },
+      put: function(url, params) {
+        return ps.fn.api.send('PUT', url, params);
+      },
+      post: function(url, params) {
+        return ps.fn.api.send('POST', url, params);
+      },
+      delete: function(url, params) {
+        return ps.fn.api.send('DELETE', url);
+      },
+      send: function(method, url, params, options) {
+        var defaultOptions = {
+          url: url,
+          headers: {
+            'PS-Tenant': ps.fn.tenant()
+          },
+          method: method,
+          dataType: 'json',
+          data: params
+        };
+        return $.ajax($.extend({}, defaultOptions, options));
+      }
+    },
     assignConfigDataToPage: function (thisconfig) {
       var hash = window.location.hash.substring(1);
       ps.v.originalPhotosWidth = parseInt(thisconfig['photosWidth']);
@@ -240,8 +274,8 @@ var ps = {
       }
     },
     checkThenOpen: function (dialogToOpen) {
-      $.getJSON('php/check.php', function (data) {
-        if (data == 'cleared') dialogToOpen.dialog('open');
+      ps.fn.api.get('php/check.php').done(function (data) {
+        if (data.message == 'cleared') dialogToOpen.dialog('open');
         else {
           ps.fn.notify("Please login to use this feature", "alert");
           ps.dialogs.$login.dialog('open');
@@ -384,10 +418,9 @@ var ps = {
     },
     copyPhotos: function (categoryTitle) {
       var images = ps.fn.getSelectedConfigImages();
-      $.ajax({
-        type: "POST",
-        url: 'php/copyPhotos.php',
-        data: { 'category_title': categoryTitle, 'images': images }
+      ps.fn.api.post('php/copyPhotos.php', {
+        'category_title': categoryTitle,
+        'images': images
       }).done(function (data) {
         for (var x in images) {
           var fromcategory = ps.fn.lookupCategory(images[x]);
@@ -441,10 +474,8 @@ var ps = {
       ps.fn.loadThumbnail($thispane.find('.thumbcontent'), paneTitle);
     },
     deletePhotos: function () {
-      $.ajax({
-        type: "POST",
-        url: 'php/delete.php',
-        data: { 'images': ps.v.multipleImagesToDelete }
+      ps.fn.api.post('php/delete.php', {
+        'images': ps.v.multipleImagesToDelete
       }).done(function (data) {
         for (var x in ps.v.multipleImagesToDelete) delete ps.o.photoData[ps.fn.lookupCategory(ps.v.multipleImagesToDelete[x].filename)][ps.fn.lookupPhoto(parseInt(ps.v.multipleImagesToDelete[x].imgid))];
         ps.fn.refreshPanes();
@@ -721,8 +752,9 @@ var ps = {
       }
     },
     logout: function () {
-      $.getJSON('php/logout.php', function (data) {
-        if (data == 'cleared') {
+      // TODO: convert to POST
+      ps.fn.api.get('php/logout.php').done(function (data) {
+        if (data.message == 'cleared') {
           $('img.settings').remove();
           ps.v.isLoggedIn = false;
           ps.fn.notify('You are logged out');
@@ -980,7 +1012,7 @@ var ps = {
     refreshPhotoConfigData: function (categoryToScroll, callback) {
       var $nocatsplaceholder = $('<span class = "config-placeholder nocats">No categories or images</span>');
       ps.v.multipleImagesToDelete = [];
-      $.getJSON('php/launchconfig.php', function (data) {
+      ps.fn.api.get('php/launchconfig.php').done(function (data) {
         ps.fn.loadingStop($('#dialog-config'));
         $('.configcontent').html(data).fadeIn('fast');
         $('.config-placeholder').remove();
@@ -1051,14 +1083,14 @@ var ps = {
     },
     sendConfig: function (callback) {
       //pass ps.o.config[] to database only. assign values to config as they are set.
-      $.getJSON('php/setconfig.php', { 'config': ps.o.config }, function (data) {
+      ps.fn.api.post('php/setconfig.php', { 'config': ps.o.config }).done(function (data) {
         if (typeof callback == 'function') {
           callback();
         }
       });
     },
     sendCategoryData: function (cat) {
-      $.getJSON('php/setcategoryvars.php', { 'config': ps.o.categoryData[cat], 'cat': cat });
+      ps.fn.api.post('php/setcategoryvars.php', { 'config': ps.o.categoryData[cat], 'cat': cat });
     },
     sendPhotoData: function (imageIds, whatToSet) {
       //photoData must be set to desired values before calling this function
@@ -1066,11 +1098,10 @@ var ps = {
       for (var x in imageIds) {
         data[x] = ps.o.photoData[ps.fn.lookupCategory(imageIds[x])][ps.fn.lookupPhoto(imageIds[x])][whatToSet];
       }
-      $.ajax({
-        type: "POST",
-        url: 'php/setPhotoData.php',
-        data: { 'images': imageIds, 'toset': whatToSet, 'data': data }
-      }).done(function (data) {
+      ps.fn.api.post('php/setPhotoData.php', {
+        'images': imageIds,
+        'toset': whatToSet,
+        'data': data
       }).fail(function () { alert("error"); return false; });
     },
     setColor: function (colortoset, newcolor, whichSlider, uiValue) {
@@ -1200,11 +1231,7 @@ var ps = {
           $(this).css({ 'background-image': 'url(' + src + ')', 'background-position': backposition }).removeClass('loading');
           thumbsArray[$(this).parent().attr('id')] = JSON.stringify({ "image": src, "position": backposition });
         });
-        $.ajax({
-          type: "POST",
-          url: 'php/setthumbs.php',
-          data: { 'thumbs': thumbsArray }
-        }).done(function (data) {
+        ps.fn.api.post('php/setthumbs.php', { 'thumbs': thumbsArray }).done(function (data) {
           ps.fn.closeNotification(), $('#revertThumb').remove();
           ps.fn.notify('Thumbnails updated. <a href=\'#\' id=\'revertThumb\' data-torevert=\'all_visible_panes\' class=\'revertLink\'>Revert to original?</a>', '', 4);
         }).fail(function () { alert("error"); return false; });
@@ -1306,24 +1333,18 @@ var ps = {
       $('.categoryHeader').each(function (index) {
         positions[$(this).attr('data-catid')] = index;
       });
-      $.ajax({
-        type: "POST",
-        url: 'php/catSort.php',
-        data: { 'sort': positions }
-      }).done(function (data) {
-      }).fail(function () { alert("error"); return false; });
+      ps.fn.api.post('php/catSort.php', { 'sort': positions }).fail(function () {
+        alert("error"); return false;
+      });
     },
     sortPictures: function () {
       var sortArray = {};
       $('.sortableContainer .onesection').each(function (index) {
         sortArray[$(this).find('.sortimage').attr('data-imgid')] = index;
       });
-      $.ajax({
-        type: "POST",
-        url: 'php/performsort.php',
-        data: { 'sort': sortArray }
-      }).done(function (data) {
-      }).fail(function () { alert("error"); return false; });
+      ps.fn.api.post('php/performsort.php', { 'sort': sortArray }).fail(function () {
+        alert("error"); return false;
+      });
     },
     stringToDecimal: function (value) {
       if (value.indexOf('.') === -1) {
@@ -1340,6 +1361,11 @@ var ps = {
         "slideshow&pid=" + ps.fn.urlvars().pid + "&cat=" + ps.fn.urlvars().cat :
         "slider&cat=" + ps.fn.urlvars().cat + '&pid=' + ps.fn.urlvars().pid;
       }
+    },
+    tenant: function() {
+      // Default to the "demo" tenant until a proper intro page and sign up
+      // flow are created
+      return ps.fn.urlvars().tenant || 'demo';
     },
     toDisplay: function (old) {
       var a = old.split(/[\s_]+/);
@@ -1440,10 +1466,9 @@ var ps = {
     },
     transferPhotos: function (transferto) {
       var images = ps.fn.getSelectedConfigImages();
-      $.ajax({
-        type: "POST",
-        url: 'php/transferPhotos.php',
-        data: { 'category': transferto, 'images': images }
+      ps.fn.api.post('php/transferPhotos.php', {
+        'category': transferto,
+        'images': images
       }).done(function (data) {
         for (var x in images) {
           var fromcategory = ps.fn.lookupCategory(images[x]);
@@ -1487,10 +1512,11 @@ var ps = {
 
     },
     urlvars: function (param, value) {
+      // Set
       if (param && value) {
-        var firsturlarray = window.location.href.split('#'), urlobj = {}, key;
-        if (firsturlarray[1]) {
-          var urlarray = firsturlarray[1].split('&');
+        var fullurlarray = window.location.href.split('#'), urlobj = {}, key;
+        if (fullurlarray[1]) {
+          var urlarray = fullurlarray[1].split('&');
           for (var x in urlarray) {
             key = urlarray[x].substring(0, urlarray[x].indexOf('='));
             if (key == param) {
@@ -1500,17 +1526,21 @@ var ps = {
           }
         }
       }
+      // Get
       else {
-        var firsturlarray = window.location.href.split('#'), urlobj = {};
-        if (firsturlarray[1]) {
-          var urlarray = firsturlarray[1].split('&');
+        var fullurlarray = window.location.href.split('#'),
+          urlobj = {};
+        urlobj.tenant = fullurlarray[0].split('/').slice(-1)[0];
+        if (fullurlarray[1]) {
+          var urlarray = fullurlarray[1].split('&');
           for (var x in urlarray) {
             var key = urlarray[x].substring(0, urlarray[x].indexOf('='));
             if (key == '') key = 'section';
             urlobj[key] = urlarray[x].substring(urlarray[x].indexOf('=') + 1);
           }
+        } else {
+          urlobj.section = 'photos';
         }
-        else urlobj = { 'section': 'photos' };
         return urlobj;
       }
     },
@@ -1686,7 +1716,7 @@ $(document).ready(function () {
     $('#photos').attr('href', ps.v.photosHash);
   }
 
-  $.getJSON('php/getdata.php', function (data) {
+  ps.fn.api.get('php/getdata.php').done(function(data) {
     ps.fn.assignConfigDataToPage(data.configdata);
     ps.o.categoryData = data.photodata;
     for (var category in data.photodata) {
@@ -1713,35 +1743,30 @@ $(document).ready(function () {
     $(window).trigger('hashchange');
   });
 
-  /*
   //check for logged in, display settings button if so
-  $.getJSON('php/check.php', function (data) {
-    if (data == 'cleared') ps.fn.completeLogin('pageload');
+  ps.fn.api.get('php/check.php').done(function (checkData) {
+    if (checkData.message == 'cleared') ps.fn.completeLogin('pageload');
     //check for localStorage "autoLogin" and attempt login if present
     else if (localStorage.autologin == 'true') {
-      $.ajax({
-        type: "POST",
-        url: "php/login.php",
-        data: { 'user': localStorage.username, 'pass': localStorage.password }
+      ps.fn.api.post("php/login.php", {
+        'user': localStorage.username,
+        'pass': localStorage.password
       }).done(function (data) {
-        var result = $.parseJSON(data);
+        var result = data.message;
         if (result == "cleared") ps.fn.completeLogin();
         else ps.fn.notify(result, 'error');
       });
     }
   });
-  */
 
-  //for demo purposes, autologin every time
-  $.ajax({
-    type: "POST",
-    url: "php/login.php",
-    data: { 'user': 'demouser', 'pass': 'demopass' }
-  }).done(function (data) {
-    var result = $.parseJSON(data);
-    if (result == "cleared") ps.fn.completeLogin();
-    else ps.fn.notify(result, 'error');
-  });
+  if (ps.fn.tenant() === 'demo') {
+    //for demo purposes, autologin every time
+    ps.fn.api.post('php/login.php', { 'user': 'demouser', 'pass': 'demopass' }).done(function (data) {
+      var result = data.message;
+      if (result == "cleared") ps.fn.completeLogin();
+      else ps.fn.notify(result, 'error');
+    });
+  }
 
   //bind form validation to form elements
   for (var x in ps.o.validationData)

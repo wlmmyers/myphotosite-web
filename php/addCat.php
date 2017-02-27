@@ -1,6 +1,6 @@
 <?php
   require_once 'dbConnection.php';
-  extract($_GET);
+  extract($_POST);
 
   try {
     $connection = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
@@ -17,9 +17,9 @@
   $statement->bindParam(':issaveable', $issaveable, PDO::PARAM_STR);
 
   if($statement->execute()) {
-    echo json_encode("Added");
-  } else{
-    echo json_encode("Failed");
+    echo json_encode( (object) array("message" => "Success") );
+  } else {
+    echo json_encode( (object) array("message" => "Failed") );
   }
   $connection = NULL;
 ?>
