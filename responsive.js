@@ -175,7 +175,7 @@ var ps = {
           options = {
             headers: {
               'Content-Type': 'application/json',
-              'PS-Tenant': ps.fn.tenant()
+              'PS-Tenant': ps.fn.getTenant()
             }
           };
 
@@ -194,7 +194,7 @@ var ps = {
         var defaultOptions = {
           url: url,
           headers: {
-            'PS-Tenant': ps.fn.tenant()
+            'PS-Tenant': ps.fn.getTenant()
           },
           method: method,
           dataType: 'json',
@@ -504,7 +504,7 @@ var ps = {
         ps.fn.log('Selector "' + selector + '" not found or not visible. Cannot display hint.');
         return;
       }
-      if(ps.fn.inUrl('nohints')) {
+      if (ps.fn.getTenant() !== 'demo') {
         return;
       }
       var hinttext = (!ps.o.hints[selector] && text) ? text : ps.o.hints[selector].text;
@@ -617,6 +617,11 @@ var ps = {
         images.push(parseInt($(this).attr('data-imgid')));
       });
       return images;
+    },
+    getTenant: function() {
+      // Default to the "demo" tenant until a proper intro page and sign up
+      // flow are created
+      return ps.fn.urlvars().tenant || 'demo';
     },
     hideHint: function(selector){
       var $hint;
@@ -1362,11 +1367,6 @@ var ps = {
         "slider&cat=" + ps.fn.urlvars().cat + '&pid=' + ps.fn.urlvars().pid;
       }
     },
-    tenant: function() {
-      // Default to the "demo" tenant until a proper intro page and sign up
-      // flow are created
-      return ps.fn.urlvars().tenant || 'demo';
-    },
     toDisplay: function (old) {
       var a = old.split(/[\s_]+/);
       var nonowords = ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'so', 'yet', 'to', 'of'];
@@ -1759,7 +1759,7 @@ $(document).ready(function () {
     }
   });
 
-  if (ps.fn.tenant() === 'demo') {
+  if (ps.fn.getTenant() === 'demo') {
     //for demo purposes, autologin every time
     ps.fn.api.post('php/login.php', { 'user': 'demouser', 'pass': 'demopass' }).done(function (data) {
       var result = data.message;
@@ -1775,7 +1775,7 @@ $(document).ready(function () {
 
 $(window).load(function(){
   ps.fn.displayHint('body', 'center modal', 0, false);
-  ps.fn.toggleContentPaneMouseoverAbility(!!ps.fn.inUrl('nohints'));
+  ps.fn.toggleContentPaneMouseoverAbility(ps.fn.getTenant() !== 'demo');
 });
 
 $(window).bind('hashchange', function () {
@@ -2035,6 +2035,10 @@ $(window).bind('hashchange', function () {
 
       if (ps.v.categoriesShown.length == 0) {
         $('.panecontainer').addClass('nopanes').find('.emptyPaneMessage').show();
+      }
+
+      if (ps.fn.getTenant() === 'demo') {
+        $('#status').stop().text('Demo').fadeIn();
       }
 
       var finishRestore = function () {

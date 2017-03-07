@@ -88,7 +88,9 @@ ps.events.contentPaneMouseleave = function (e) {
   }
   //fadeout status text
   $('#status').fadeOut('slow', function () {
-    $('#status').stop().text('Demo').fadeIn();
+    if (ps.fn.getTenant() === 'demo') {
+      $('#status').stop().text('Demo').fadeIn();
+    }
   });
 
   $(this).find('.emptyPaneMessage').remove();
