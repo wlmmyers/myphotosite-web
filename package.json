@@ -8,7 +8,9 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "^6.23.0",
     "babel-preset-env": "^1.1.8",
+    "babel-preset-latest": "^6.22.0",
     "babelify": "^7.3.0"
   },
   "dependencies": {
@@ -21,6 +23,6 @@
   },
   "scripts": {
     "dev": "webpack -d --watch",
-    "build" : "webpack -p"
+    "build": "webpack -p"
   }
 }
