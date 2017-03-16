@@ -129,12 +129,12 @@ $(document).on('click', 'img.settings', function () {
   ps.fn.checkThenOpen(ps.dialogs.$settings);
 });
 
-$('#maincontainer').on('click', '.minipane:not(.fake)', function (e) {
+$('#main-container').on('click', '.minipane:not(.fake)', function (e) {
   window.location.hash = 'slideshow&pid=' + $(this).attr('data-path') + '&cat=' + this.parentNode.parentNode.id;
   return false;
 });
 
-$('#maincontainer').on('click', '.pagearrows', function () {
+$('#main-container').on('click', '.pagearrows', function () {
   var paneID = this.parentNode.id;
   var arrowID = this.id;
   var minipaneID = '#' + paneID + ' .paneexpanded #minipane';
@@ -1155,7 +1155,7 @@ $("#paneSizeSlider").slider({
   step: 1,
   slide: function (event, ui) {
     $('#paneSizeSlider .ui-slider-handle').text(ui.value + 'px');
-    $('#maincontainer').css('width', ui.value + 'px');
+    $('#main-container').css('width', ui.value + 'px');
     ps.o.config[ps.fn.urlvars().section + 'Width'] = ui.value;
     ps.fn.setPaneWidth();
   },
@@ -1195,7 +1195,7 @@ $("#paneExpandedSizeSlider").slider({
 
 $(document).on('click', '#paneWidth a.normalize', function () {
   for (var x in ps.o.config) {
-    if (x.indexOf('Width') > -1 && x.indexOf('Expanded') < 0 && x.indexOf('photos') < 0) ps.o.config[x] = $('#maincontainer').width();
+    if (x.indexOf('Width') > -1 && x.indexOf('Expanded') < 0 && x.indexOf('photos') < 0) ps.o.config[x] = $('#main-container').width();
   }
   ps.fn.notify('Section widths normalized to <span class = \"italic\">' + $('#paneSizeSlider a').text() + '</span>.');
   return false;

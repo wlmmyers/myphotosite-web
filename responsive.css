@@ -30,7 +30,7 @@ body {
   background-color: white;
 }
 
-#maincontainer {
+#main-container {
   z-index: 1;
   position: relative;
   margin: auto;
@@ -1752,7 +1752,7 @@ a.normalizeColors:before {
     padding: 0 !important;
     overflow-y: auto;
   }
-  #maincontainer {
+  #main-container {
     box-sizing: border-box;
     max-width: 70%;
     padding: 20px;
@@ -1796,8 +1796,9 @@ a.normalizeColors:before {
     padding: 0 !important;
     overflow-y: auto;
   }
-  #maincontainer {
-    display: none;
+  /* important needed to override React */
+  #main-container {
+    display: none !important;
   }
   #mobile-container {
     display: block;

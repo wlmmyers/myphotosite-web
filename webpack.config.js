@@ -6,6 +6,7 @@ var APP_DIR = path.resolve(__dirname, 'app');
 
 var config = {
   entry: APP_DIR + '/index.jsx',
+  devtool: '#source-map',
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js'
@@ -18,7 +19,17 @@ var config = {
         loader: 'babel-loader'
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.LoaderOptionsPlugin({
+      debug: true
+    }),
+    new webpack.DefinePlugin({
+      'process.env':{
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
+      }
+    })
+  ]
 };
 
 module.exports = config;

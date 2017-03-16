@@ -15,6 +15,7 @@
 *.DS_Store
 dbConnection.php
 /node_modules/
+/public/bundle.js
 
 # Used by dotenv library to load environment variables.
 # .env

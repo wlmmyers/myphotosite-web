@@ -121,7 +121,7 @@ var ps = {
       ps.fn.adjustSectionWidth('photos');
     },
     adjustSectionWidth: function (section, callback) {
-      $('#maincontainer').animate({ 'width': ps.o.config[section + 'Width'] + 'px' }, 200, function () {
+      $('#main-container').animate({ 'width': ps.o.config[section + 'Width'] + 'px' }, 200, function () {
         if (typeof callback === 'function') callback();
       });
       if (section === 'photos') ps.fn.setPaneWidth();
@@ -207,7 +207,7 @@ var ps = {
       var hash = window.location.hash.substring(1);
       ps.v.originalPhotosWidth = parseInt(thisconfig['photosWidth']);
       ps.v.originalBackground = thisconfig['backgroundImage'];
-      $('#maincontainer').css({ 'width': thisconfig[ps.fn.urlvars().section + 'Width'] + 'px' });
+      $('#main-container').css({ 'width': thisconfig[ps.fn.urlvars().section + 'Width'] + 'px' });
       $('html').css('backgroundImage', thisconfig['backgroundImage']);
       $('#bodyScreen').css({ 'background-color': thisconfig['backFilterColor'] });
       $('#globalNotification .inner').css('background-color', thisconfig['notificationColor']);
@@ -217,7 +217,7 @@ var ps = {
       $('#creationspane').css('background-color', thisconfig['creationsBackColor']);
       $('#requestpane').css('background-color', thisconfig['requestBackColor']);
       $('.infopane').css('background-color', thisconfig[hash + 'AccentColor']);
-      $('#maincontainer').css('max-height', thisconfig['contentMaxHeight']);
+      $('#main-container').css('max-height', thisconfig['contentMaxHeight']);
       $('#status').css('color', thisconfig['statusColor']);
       $('footer a,footer a.visited,footer aside,.bigpane,input,h2,h3').css('color', thisconfig['textColor']);
 
@@ -227,7 +227,7 @@ var ps = {
     assignDimensions: function () {
       //this function runs window resize
       $('html').height($(window).height());
-      var mainmargin = parseInt($('#maincontainer').css('margin-left'));
+      var mainmargin = parseInt($('#main-container').css('margin-left'));
       var paneheight = $('.contentpane').height();
       var winwidth = $(window).width();
       var distanceToEdge = winwidth - mainmargin - 50;
@@ -642,7 +642,7 @@ var ps = {
 
       $('html').height($(window).height());
       var $nopanesplaceholder;
-      var mainmargin = parseInt($('#maincontainer').css('margin-left'));
+      var mainmargin = parseInt($('#main-container').css('margin-left'));
       var paneheight = $('.contentpane').height();
       var winwidth = $(window).width();
       var distanceToEdge = winwidth - mainmargin - 50;
@@ -701,7 +701,7 @@ var ps = {
       $('.paneexpanded').hide();
       $('#bodyScreen').css('background-color', ps.o.config['backFilterColor']);
       $('body').css('padding-top', '4%');
-      $('#maincontainer').fadeIn();
+      $('#main-container').fadeIn();
       $('.panecontainer').css('width', '100%');
       $('.contentpane').fadeOut('fast');
     },
@@ -1224,7 +1224,7 @@ var ps = {
       $('#slideshowcontainer .imagetext').css('background-color', ps.o.categoryData[ps.fn.urlvars().cat]['slideshowAccentColor'] || ps.o.siteDefaults['slideshowAccentColor']);
     },
     setUniversalThumb: function (filename) {
-      var width = $('#maincontainer').width();
+      var width = $('#main-container').width();
       var src = 'php/timthumb.php?a=l&w=' + width + '&src=http://'+ window.location.host +'/photos/' + filename;
       var thumbsArray = {};
       $image = $('#thumbImgHidden').attr({ 'src': src });
@@ -1704,7 +1704,11 @@ $(document).ready(function () {
 
   var hash = window.location.hash;
 
-  //addHidden hash stuff
+  // TODO: Remove this in favor of a React routing setup when I'm not a plane ;)
+  if (ps.fn.inUrl('welcome')) {
+    return;
+  }
+  // addHidden hash stuff
   if (ps.fn.inUrl('addhidden')) {
     ps.v.panesAddedByURL = ps.fn.urlvars().addhidden.split(',');
     ps.v.photosHash += '&addhidden=' + ps.fn.urlvars().addhidden;
@@ -1766,6 +1770,10 @@ $(document).ready(function () {
       if (result == "cleared") ps.fn.completeLogin();
       else ps.fn.notify(result, 'error');
     });
+    ps.fn.toggleContentPaneMouseoverAbility(ps.fn.inUrl('nohints'));
+  } else {
+    //bind pane mouseover events
+    ps.fn.toggleContentPaneMouseoverAbility(true);
   }
 
   //bind form validation to form elements
@@ -1774,7 +1782,9 @@ $(document).ready(function () {
 });
 
 $(window).load(function(){
-  ps.fn.displayHint('body', 'center modal', 0, false);
+  if (ps.fn.getTenant() === 'demo') {
+    ps.fn.displayHint('body', 'center modal', 0, false);
+  }
   ps.fn.toggleContentPaneMouseoverAbility(ps.fn.getTenant() !== 'demo');
 });
 
@@ -1867,7 +1877,7 @@ $(window).bind('hashchange', function () {
           ps.v.sliderImgsNotYetLoaded.push(ps.o.photoData[currentPane][x].filename);
           if (ps.o.photoData[currentPane][x].filename == urlvars.pid) break;
         }
-        $('#maincontainer').fadeOut('fast', function () {
+        $('#main-container').fadeOut('fast', function () {
           $('body').css('padding', '0');
           $('#bodyScreen').hide();
           ps.fn.setPageNumber('#slidercontainer .largepagenum');
@@ -1968,7 +1978,7 @@ $(window).bind('hashchange', function () {
       $('body').css('overflow-x', 'hidden');
       $('#slideshowcontainer').fadeIn('fast').loadingStart(80);
 
-      $('#maincontainer').fadeOut('fast', function () {
+      $('#main-container').fadeOut('fast', function () {
         $('body').css('padding', '0');
         $('#bodyScreen').hide();
         $('#largesingleimage').removeAttr('src');
@@ -2050,7 +2060,7 @@ $(window).bind('hashchange', function () {
         $('#slidercontainer').hide();
         //re-add body padding
         $('body').css('padding-top', '4%');
-        $('#maincontainer').fadeIn(function () { ps.fn.assignDimensions() });
+        $('#main-container').fadeIn(function () { ps.fn.assignDimensions() });
       };
 
       var finishSwitch = function () {
