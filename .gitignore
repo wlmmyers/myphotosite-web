@@ -16,6 +16,7 @@
 dbConnection.php
 /node_modules/
 /public/bundle.js
+/public/bundle.js.map
 
 # Used by dotenv library to load environment variables.
 # .env
