@@ -1797,6 +1797,7 @@ a.normalizeColors:before {
     overflow-y: auto;
   }
   /* important needed to override React */
+  /*
   #main-container {
     display: none !important;
   }
@@ -1804,6 +1805,7 @@ a.normalizeColors:before {
     display: block;
     position: relative;
   }
+  */
   header {
     bottom: 84%;
   }
