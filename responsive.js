@@ -1720,32 +1720,10 @@ $(document).ready(function () {
     $('#photos').attr('href', ps.v.photosHash);
   }
 
-  ps.fn.api.get('php/getdata.php').done(function(data) {
-    ps.fn.assignConfigDataToPage(data.configdata);
-    ps.o.categoryData = data.photodata;
-    for (var category in data.photodata) {
-      if(data.photodata[category]['photos'][0]['id'] != null) ps.o.photoData[category] = data.photodata[category]['photos'];
-      else ps.o.photoData[category] = [];
-
-      for (var prop in data.photodata[category]) {
-        if (data.photodata[category][prop] == "") ps.o.categoryData[category][prop] = ps.o.siteDefaults[prop] || "";
-      }
-      if (ps.v.panesHiddenByURL.indexOf(category) == -1 && data.photodata[category].hidden == '0' || ps.v.panesAddedByURL.indexOf(category) > -1) ps.v.categoriesShown.push(category);
-      ps.o.categoryData[category].isFirstLoad = true;
-      ps.o.categoryData[category].pagePosition = 0;
-      ps.o.categoryData[category].resetPane = false;
-      delete ps.o.categoryData[category].photos;
-    }
-
-    for (var x in ps.o.photoData) {
-      for (var y in ps.o.photoData[x]) {
-        ps.o.picsCaptions[ps.o.photoData[x][y].filename] = ps.o.photoData[x][y].caption;
-        ps.o.picsComments[ps.o.photoData[x][y].filename] = ps.o.photoData[x][y].comments;
-      }
-    }
-    $('body').trigger('click');
-    $(window).trigger('hashchange');
-  });
+  /*
+   * Call to getData.php is made and subsequent global data object setup is done
+   * in React app
+   */
 
   //check for logged in, display settings button if so
   ps.fn.api.get('php/check.php').done(function (checkData) {

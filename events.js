@@ -129,12 +129,12 @@ $(document).on('click', 'img.settings', function () {
   ps.fn.checkThenOpen(ps.dialogs.$settings);
 });
 
-$('#main-container').on('click', '.minipane:not(.fake)', function (e) {
+$(document).on('click', '.minipane:not(.fake)', function (e) {
   window.location.hash = 'slideshow&pid=' + $(this).attr('data-path') + '&cat=' + this.parentNode.parentNode.id;
   return false;
 });
 
-$('#main-container').on('click', '.pagearrows', function () {
+$(document).on('click', '#main-container .pagearrows', function () {
   var paneID = this.parentNode.id;
   var arrowID = this.id;
   var minipaneID = '#' + paneID + ' .paneexpanded #minipane';

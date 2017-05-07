@@ -30,6 +30,12 @@ body {
   background-color: white;
 }
 
+#react-container,
+#react-container > [data-reactroot] {
+  width: 100%;
+  height: 100%;
+}
+
 #main-container {
   z-index: 1;
   position: relative;
@@ -566,6 +572,13 @@ textarea {
   overflow:  hidden;
   z-index: 500;
 
+}
+
+.minipane-mobile {
+  float: left;
+  width: 100px;
+  height: 60px;
+  margin: 0 10px 10px 0;
 }
 
 .minipane.fake {
